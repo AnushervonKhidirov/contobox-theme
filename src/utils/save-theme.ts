@@ -1,7 +1,7 @@
 import { saveEndpoint } from '../index'
 import { showLogs } from './log'
 
-export async function saveTheme(headers: { [key: string]: string }, body: string, file: string) {
+export async function saveTheme(headers: { [key: string]: string }, body: string, file: string, themeName: string) {
     const options = {
         method: 'POST',
         body: body,
@@ -10,5 +10,5 @@ export async function saveTheme(headers: { [key: string]: string }, body: string
 
     await fetch(saveEndpoint, options)
 
-    showLogs(file, 'pushed')
+    showLogs(file, 'push', themeName)
 }

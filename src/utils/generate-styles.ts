@@ -12,6 +12,7 @@ export async function generateStyles(
     templateDirname: string,
     contoboxType: TContoboxType,
     getStylesFrom: TStylesFrom,
+    convertedThemeName: string,
     themeName: string,
     cookie: string,
     themeId: string,
@@ -19,7 +20,7 @@ export async function generateStyles(
     if (!fs.existsSync(buildDirname)) fs.mkdirSync(buildDirname)
 
     if (getStylesFrom === 'local') generateStylesFromLocal(buildDirname, templateDirname, contoboxType)
-    if (getStylesFrom === 'theme') await generateStylesFromTheme(buildDirname, contoboxType, themeName, cookie, themeId)
+    if (getStylesFrom === 'theme') await generateStylesFromTheme(buildDirname, contoboxType, convertedThemeName, themeName, cookie, themeId)
 }
 
 function generateStylesFromLocal(buildDirname: string, templateDirname: string, contoboxType: TContoboxType) {
@@ -72,6 +73,7 @@ function generateStylesFromLocal(buildDirname: string, templateDirname: string, 
 async function generateStylesFromTheme(
     buildDirname: string,
     contoboxType: TContoboxType,
+    convertedThemeName: string,
     themeName: string,
     cookie: string,
     themeId: string,
@@ -122,8 +124,8 @@ async function generateStylesFromTheme(
 
         const fileName = selectedContoboxTypeStylesList[contoboxType][fileIndex]
         const headers = getHeaders(cookie, themeId)
-        const body = getBodyForPull(themeName, fileName, contoboxType)
-        const styles = await pullTheme(headers, body, fileName)
+        const body = getBodyForPull(convertedThemeName, fileName, contoboxType)
+        const styles = await pullTheme(headers, body, fileName, themeName)
 
         
         const convertedFileName = convertedFileNames[contoboxType][fileName]

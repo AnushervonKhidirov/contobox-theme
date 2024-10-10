@@ -10,6 +10,7 @@ import { getBodyForPush } from './get-body'
 export async function watchFiles(
     dirname: string,
     cookie: string,
+    convertedThemeName: string,
     themeName: string,
     themeId: string,
     getStylesFrom: TStylesFrom,
@@ -28,7 +29,7 @@ export async function watchFiles(
     function pushTheme(file: string) {
         const styles = fs.readFileSync(path.resolve(dirname, file), { encoding: 'utf-8' })
         const headers = getHeaders(cookie, themeId)
-        const body = getBodyForPush(themeName, themeId, file, styles, contoboxType)
-        saveTheme(headers, body, file)
+        const body = getBodyForPush(convertedThemeName, themeId, file, styles, contoboxType)
+        saveTheme(headers, body, file, themeName)
     }
 }

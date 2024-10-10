@@ -2,7 +2,7 @@ import { unescape } from 'querystring'
 import { loadEndpoint } from '../index'
 import { showLogs } from './log'
 
-export async function pullTheme(headers: { [key: string]: string }, body: string, file: string) {
+export async function pullTheme(headers: { [key: string]: string }, body: string, file: string, themeName: string) {
     const options = {
         method: 'POST',
         body: body,
@@ -12,6 +12,6 @@ export async function pullTheme(headers: { [key: string]: string }, body: string
     const response = await fetch(loadEndpoint, options)
     const styles = await response.json()
 
-    showLogs(file, 'pulled')
+    showLogs(file, 'pull', themeName)
     return unescape(styles.media)
 }

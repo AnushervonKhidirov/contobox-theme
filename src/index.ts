@@ -25,8 +25,8 @@ async function start() {
     const buildDirname = './styles'
 
     console.clear()
-    await generateStyles(buildDirname, templateDirname, contoboxType, getStylesFrom, convertedThemeName, cookie, themeId)
-    watchFiles(buildDirname, cookie, convertedThemeName, themeId, getStylesFrom, contoboxType)
+    await generateStyles(buildDirname, templateDirname, contoboxType, getStylesFrom, convertedThemeName, themeName, cookie, themeId)
+    watchFiles(buildDirname, cookie, convertedThemeName, themeName, themeId, getStylesFrom, contoboxType)
 }
 
 start()
