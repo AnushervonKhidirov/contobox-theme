@@ -11,7 +11,7 @@ export function getHeaders(token: string, themeId: string): { [key: string]: str
         'sec-fetch-mode': 'cors',
         'sec-fetch-site': 'same-origin',
         'x-requested-with': 'XMLHttpRequest',
-        cookie: token,
+        cookie: `PHPSESSID=${token}`,
         Referer: `https://flow-dbb1.contobox.com/themesv30/edit.html?id=${themeId}`,
         'Referrer-Policy': 'strict-origin-when-cross-origin',
     }

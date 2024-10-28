@@ -20,7 +20,7 @@ async function main() {
     const themeId = await input({ message: 'Theme id:' })
     const themeName = await input({ message: 'Theme name:' })
     const convertedThemeName = themeName.replaceAll(' ', '_').toLowerCase()
-    const token = await input({ message: 'token:' })
+    const token = await input({ message: 'token (PHPSESSID):' })
 
     const templateDirname = path.resolve(__dirname, 'style-templates')
     const buildDirname = `./contoboxes/IO ${io} - ${themeName}/styles`
