@@ -1,4 +1,4 @@
-export function getHeaders(cookie: string, themeId: string): { [key: string]: string } {
+export function getHeaders(token: string, themeId: string): { [key: string]: string } {
     return {
         accept: '*/*',
         'accept-language': 'en-US,en;q=0.9,ru;q=0.8',
@@ -11,7 +11,7 @@ export function getHeaders(cookie: string, themeId: string): { [key: string]: st
         'sec-fetch-mode': 'cors',
         'sec-fetch-site': 'same-origin',
         'x-requested-with': 'XMLHttpRequest',
-        cookie: cookie,
+        cookie: token,
         Referer: `https://flow-dbb1.contobox.com/themesv30/edit.html?id=${themeId}`,
         'Referrer-Policy': 'strict-origin-when-cross-origin',
     }

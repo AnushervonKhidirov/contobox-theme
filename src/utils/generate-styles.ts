@@ -14,13 +14,13 @@ export async function generateStyles(
     getStylesFrom: TStylesFrom,
     convertedThemeName: string,
     themeName: string,
-    cookie: string,
+    token: string,
     themeId: string,
 ) {
     createFolders(buildDirname)
 
     if (getStylesFrom === 'local') generateStylesFromLocal(buildDirname, templateDirname, contoboxType)
-    if (getStylesFrom === 'theme') await generateStylesFromTheme(buildDirname, contoboxType, convertedThemeName, themeName, cookie, themeId)
+    if (getStylesFrom === 'theme') await generateStylesFromTheme(buildDirname, contoboxType, convertedThemeName, themeName, token, themeId)
 }
 
 function createFolders(dirname: string) {
@@ -80,7 +80,7 @@ async function generateStylesFromTheme(
     contoboxType: TContoboxType,
     convertedThemeName: string,
     themeName: string,
-    cookie: string,
+    token: string,
     themeId: string,
 ) {
     const selectedContoboxTypeStylesList: { [key: string]: string[] } = {
@@ -124,11 +124,11 @@ async function generateStylesFromTheme(
         },
     }
 
-    async function pullThemeAsync(fileIndex: number) {
+    async function pullThemeAsync(fileIndex: number = 0) {
         const fileLength = selectedContoboxTypeStylesList[contoboxType].length
 
         const fileName = selectedContoboxTypeStylesList[contoboxType][fileIndex]
-        const headers = getHeaders(cookie, themeId)
+        const headers = getHeaders(token, themeId)
         const body = getBodyForPull(convertedThemeName, fileName, contoboxType)
         const styles = await pullTheme(headers, body, fileName, themeName)
 
@@ -139,5 +139,5 @@ async function generateStylesFromTheme(
         if (fileIndex < fileLength - 1) await pullThemeAsync(++fileIndex)
     }
 
-    await pullThemeAsync(0)
+    await pullThemeAsync()
 }

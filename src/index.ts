@@ -9,7 +9,7 @@ import { generateStyles } from './utils/generate-styles'
 export const saveEndpoint = 'https://flow-dbb1.contobox.com/themesv30/saveStyle.html'
 export const loadEndpoint = 'https://flow-dbb1.contobox.com/themesv30/loadStyle.html'
 
-async function start() {
+async function main() {
     const getStylesFromList: TStylesFrom[] = ['theme', 'local']
     const availableContoboxList: TContoboxType[] = ['desktop', 'mobile', 'fallback', 'banner']
 
@@ -20,14 +20,14 @@ async function start() {
     const themeId = await input({ message: 'Theme id:' })
     const themeName = await input({ message: 'Theme name:' })
     const convertedThemeName = themeName.replaceAll(' ', '_').toLowerCase()
-    const cookie = await input({ message: 'Cookies:' })
+    const token = await input({ message: 'token:' })
 
     const templateDirname = path.resolve(__dirname, 'style-templates')
     const buildDirname = `./contoboxes/IO ${io} - ${themeName}/styles`
 
     console.clear()
-    await generateStyles(buildDirname, templateDirname, contoboxType, getStylesFrom, convertedThemeName, themeName, cookie, themeId)
-    watchFiles(buildDirname, cookie, convertedThemeName, themeName, themeId, getStylesFrom, contoboxType)
+    await generateStyles(buildDirname, templateDirname, contoboxType, getStylesFrom, convertedThemeName, themeName, token, themeId)
+    watchFiles(buildDirname, token, convertedThemeName, themeName, themeId, getStylesFrom, contoboxType)
 }
 
-start()
+main()
