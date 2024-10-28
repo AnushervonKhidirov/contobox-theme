@@ -153,23 +153,6 @@ li.tab-button.current {
     transform: none;
 }
 
-li.tab-button::after {
-    content: '';
-    display: inline-block;
-    width: 7px;
-    height: 12px;
-    background: url(images/menu-arrow.png) 0 0 no-repeat;
-    background-size: contain;
-    margin: 0 0 -1px 5px;
-    opacity: 0;
-    transition: opacity 0.2s;
-}
-
-li.tab-button:hover::after,
-li.tab-button.current::after {
-    opacity: 1;
-}
-
 /* =================
 	side bar
    ================= */

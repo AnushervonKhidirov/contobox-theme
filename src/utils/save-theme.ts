@@ -8,7 +8,10 @@ export async function saveTheme(headers: { [key: string]: string }, body: string
         headers: headers,
     }
 
-    await fetch(saveEndpoint, options)
-
-    showLogs(file, 'push', themeName)
+    try {
+        await fetch(saveEndpoint, options)
+        showLogs(file, 'push', themeName)
+    } catch (err: any) {
+        console.log(err.message)
+    }
 }

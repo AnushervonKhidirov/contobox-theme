@@ -9,9 +9,14 @@ export async function pullTheme(headers: { [key: string]: string }, body: string
         headers: headers,
     }
 
-    const response = await fetch(loadEndpoint, options)
-    const styles = await response.json()
+    try {
+        const response = await fetch(loadEndpoint, options)
+        const styles = await response.json()
 
-    showLogs(file, 'pull', themeName)
-    return unescape(styles.media)
+        showLogs(file, 'pull', themeName)
+        return unescape(styles.media)
+    } catch (err: any) {
+        console.log(err.message)
+        return ''
+    }
 }

@@ -13,16 +13,17 @@ async function start() {
     const getStylesFromList: TStylesFrom[] = ['theme', 'local']
     const availableContoboxList: TContoboxType[] = ['desktop', 'mobile', 'fallback', 'banner']
 
-    const getStylesFrom = (await select({ message: `Get style from:`, choices: getStylesFromList})) as TStylesFrom
-    const contoboxType = (await select({ message: `Contobox typ:`, choices: availableContoboxList})) as TContoboxType
+    const getStylesFrom = await select<TStylesFrom>({ message: `Get style from:`, choices: getStylesFromList})
+    const contoboxType = await select<TContoboxType>({ message: `Contobox type:`, choices: availableContoboxList})
     
+    const io = await input({ message: 'Contobox IO:' })
     const themeId = await input({ message: 'Theme id:' })
     const themeName = await input({ message: 'Theme name:' })
     const convertedThemeName = themeName.replaceAll(' ', '_').toLowerCase()
     const cookie = await input({ message: 'Cookies:' })
 
     const templateDirname = path.resolve(__dirname, 'style-templates')
-    const buildDirname = './styles'
+    const buildDirname = `./contoboxes/IO ${io} - ${themeName}/styles`
 
     console.clear()
     await generateStyles(buildDirname, templateDirname, contoboxType, getStylesFrom, convertedThemeName, themeName, cookie, themeId)

@@ -17,10 +17,15 @@ export async function generateStyles(
     cookie: string,
     themeId: string,
 ) {
-    if (!fs.existsSync(buildDirname)) fs.mkdirSync(buildDirname)
+    createFolders(buildDirname)
 
     if (getStylesFrom === 'local') generateStylesFromLocal(buildDirname, templateDirname, contoboxType)
     if (getStylesFrom === 'theme') await generateStylesFromTheme(buildDirname, contoboxType, convertedThemeName, themeName, cookie, themeId)
+}
+
+function createFolders(dirname: string) {
+    if (!fs.existsSync(dirname)) fs.mkdirSync(dirname, { recursive: true })
+    if (!fs.existsSync(path.resolve(dirname, 'images'))) fs.mkdirSync(path.resolve(dirname, 'images'), { recursive: true })
 }
 
 function generateStylesFromLocal(buildDirname: string, templateDirname: string, contoboxType: TContoboxType) {
