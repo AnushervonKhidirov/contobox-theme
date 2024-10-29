@@ -128,12 +128,10 @@ async function generateStylesFromTheme(
         const fileLength = selectedContoboxTypeStylesList[contoboxType].length
 
         const fileName = selectedContoboxTypeStylesList[contoboxType][fileIndex]
+        const convertedFileName = convertedFileNames[contoboxType][fileName]
         const headers = getHeaders(token, themeId)
         const body = getBodyForPull(convertedThemeName, fileName, contoboxType)
-        const styles = await pullTheme(headers, body, fileName, themeName)
-
-        
-        const convertedFileName = convertedFileNames[contoboxType][fileName]
+        const styles = await pullTheme(headers, body, convertedFileName, themeName)
         fs.writeFileSync(path.resolve(buildDirname, convertedFileName), styles, { encoding: 'utf-8' })
 
         if (fileIndex < fileLength - 1) await pullThemeAsync(++fileIndex)

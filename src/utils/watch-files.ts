@@ -27,6 +27,9 @@ export async function watchFiles(
     })
 
     function pushTheme(file: string) {
+        if (!fs.existsSync(path.resolve(dirname, file))) {
+            return console.log(file, " isn't exist")
+        }
         const styles = fs.readFileSync(path.resolve(dirname, file), { encoding: 'utf-8' })
         const headers = getHeaders(token, themeId)
         const body = getBodyForPush(convertedThemeName, themeId, file, styles, contoboxType)
