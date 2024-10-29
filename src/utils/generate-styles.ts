@@ -19,7 +19,7 @@ export async function generateStyles(
 ) {
     createFolders(buildDirname)
 
-    if (getStylesFrom === 'local') generateStylesFromLocal(buildDirname, templateDirname, contoboxType)
+    if (getStylesFrom === 'local' || getStylesFrom === 'generate styles only') generateStylesFromLocal(buildDirname, templateDirname, contoboxType)
     if (getStylesFrom === 'theme') await generateStylesFromTheme(buildDirname, contoboxType, convertedThemeName, themeName, token, themeId)
 }
 
