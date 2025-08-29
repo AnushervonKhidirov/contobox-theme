@@ -12,15 +12,29 @@ export class Message {
 
       const textWithDate = textWithDashes.join('') + timeText;
 
-      console.log(textWithDate);
+      process.stdout.write(textWithDate);
     } else {
-      console.log(text);
+      process.stdout.write(text);
     }
   }
 
-  static error(text: string) {
-    console.error(text);
+  static success(text: string, additionalText: string) {
+    process.stdout.write(`\x1b[32m${text}\x1b[0m ${additionalText}\n`);
   }
+
+  static warn(text: string, additionalText: string) {
+    process.stdout.write(`\x1b[33m${text}\x1b[0m ${additionalText}\n`);
+  }
+
+  static error(text: string, additionalText: string) {
+    process.stdout.write(`\x1b[31m${text}\x1b[0m ${additionalText}\n`);
+  }
+
+  static done(text: string, additionalText: string) {
+    process.stdout.write(`\x1b[36m${text}\x1b[0m ${additionalText}\n`);
+  }
+
+  private withDates() {}
 
   static clear() {
     console.clear();

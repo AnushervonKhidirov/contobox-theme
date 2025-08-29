@@ -4,6 +4,7 @@ import type { AuthOptions } from './auth/auth.type';
 import type { ThemeOptions } from './theme/theme.type';
 
 import { resolve } from 'path';
+import { exec } from 'child_process';
 import { input, select, checkbox, confirm } from '@inquirer/prompts';
 
 import { AuthService } from './auth/auth.service';
@@ -11,6 +12,8 @@ import { ThemeService } from './theme/theme.service';
 import { FileService } from './files/files.service';
 
 import { Message } from './message/message';
+
+import { WORKING_DIR, ASSETS_DIR } from './constant';
 
 type ProgramOptions = {
   auth: AuthOptions;
@@ -23,9 +26,9 @@ class Program {
   SID: string | null;
 
   // services
-  private readonly authService: AuthService;
-  private themeService: ThemeService | null;
-  private fileService: FileService | null;
+  // private readonly authService: AuthService;
+  // private themeService: ThemeService | null;
+  // private fileService: FileService | null;
 
   private readonly stylesFromList: StylesFrom[];
   private readonly availableTypesList: FileType[];
@@ -42,9 +45,9 @@ class Program {
     this.SID = null;
 
     // services
-    this.authService = new AuthService(this.options.auth);
-    this.themeService = null;
-    this.fileService = null;
+    // this.authService = new AuthService(this.options.auth);
+    // this.themeService = null;
+    // this.fileService = null;
 
     this.stylesFromList = ['server', 'local'];
     this.availableTypesList = ['desktop', 'mobile', 'fallback', 'banner'];
@@ -59,21 +62,30 @@ class Program {
   async init() {
     await this.start();
 
-    await this.logIn();
+    // await this.logIn();
 
-    this.initThemeService();
-    this.initFileService();
+    // this.initThemeService();
+    // this.initFileService();
 
-    if (this.stylesFrom === 'server') {
-      await this.loadFromServer();
-    } else {
-      await this.loadFromLocal();
-    }
+    // if (this.stylesFrom === 'server') {
+    //   await this.loadFromServer();
+    // } else {
+    //   await this.loadFromLocal();
+    // }
 
-    this.startWatchingFiles();
+    // this.startWatchingFiles();
   }
 
   private async start() {
+    await this.askQuestions();
+
+    const themeWorkingDir = resolve(WORKING_DIR, this.themeFolderName!);
+
+    this.createWorkingDir(themeWorkingDir);
+    await this.openWorkDir(themeWorkingDir);
+  }
+
+  private async askQuestions() {
     this.stylesFrom = await select<StylesFrom>({
       message: `Get style from:`,
       choices: this.stylesFromList,
@@ -86,78 +98,99 @@ class Program {
     });
 
     this.io = parseInt(await input({ message: 'Contobox IO:', required: true }));
-    this.themeName = await input({ message: 'Theme name:', required: true });
-
-    const confirmed = await confirm({ message: 'Do you want to continue?', default: false });
-
-    if (!confirmed) process.exit();
+    this.themeName = (await input({ message: 'Theme name:', required: true })).trim();
 
     this.themeFolderName = `IO ${this.io} | ${this.themeName}`;
 
-    Message.log(
-      `"${this.themeFolderName}" will creating after successful login in path\nfile://${resolve(
-        process.cwd(),
-        'contoboxes',
-      )} | Ctrl+Click to open folder`,
+    const confirmed = await confirm({
+      message: `Folder "\x1b[36m${this.themeFolderName}\x1b[0m" will be created in path: \x1b[36m${WORKING_DIR}\x1b[0m.\n Do you want to continue?`,
+      default: false,
+    });
+
+    if (!confirmed) process.exit();
+  }
+
+  private createWorkingDir(dir: string) {
+    FileService.createFolder(dir);
+    FileService.createFolder(resolve(dir, '.vscode'));
+
+    FileService.copy(
+      resolve(ASSETS_DIR, '.vscode', 'settings.json'),
+      resolve(dir, '.vscode', 'settings.json'),
     );
   }
 
-  private async logIn() {
-    await this.authService.logIn();
-    this.SID = this.authService.getSID();
+  private async openWorkDir(dir: string) {
+    const openIn = {
+      Folder: 'open',
+      VSCode: 'code',
+      WebStorm: 'webstorm',
+    };
 
-    if (!this.SID) {
-      throw 'Error while logging in, please check username/password';
-    }
-  }
-
-  private initThemeService() {
-    if (!this.themeName || !this.SID) {
-      throw "Can't get theme name or SID!";
-    }
-
-    this.themeService = new ThemeService({
-      ...this.options.theme,
-      themeName: this.themeName,
-      SID: this.SID,
+    const openInSelected = await select<keyof typeof openIn>({
+      message: `Open in:`,
+      choices: Object.keys(openIn),
     });
+
+    exec(`${openIn[openInSelected]} "${dir}"`);
   }
 
-  private initFileService() {
-    if (!this.themeFolderName || !this.contoboxTypes) {
-      throw "Can't get theme folder name or contobox types!";
-    }
+  // private async logIn() {
+  //   await this.authService.logIn();
+  //   this.SID = this.authService.getSID();
 
-    this.fileService = new FileService(this.themeFolderName, this.contoboxTypes);
-  }
+  //   if (!this.SID) {
+  //     throw 'Error while logging in, please check username/password';
+  //   }
+  // }
 
-  private async loadFromLocal() {
-    if (!this.fileService) throw "Can't find file service";
-    if (!this.themeService) throw "Can't find theme service";
+  // private initThemeService() {
+  //   if (!this.themeName || !this.SID) {
+  //     throw "Can't get theme name or SID!";
+  //   }
 
-    this.fileService.createFiles();
-    const workingFiles = this.fileService.getAllFilesDataFromWorkDir();
-    await this.themeService.pushMany(workingFiles);
+  //   this.themeService = new ThemeService({
+  //     ...this.options.theme,
+  //     themeName: this.themeName,
+  //     SID: this.SID,
+  //   });
+  // }
 
-    Message.log('All styles pushed successfully!');
-  }
+  // private initFileService() {
+  //   if (!this.themeFolderName || !this.contoboxTypes) {
+  //     throw "Can't get theme folder name or contobox types!";
+  //   }
 
-  private async loadFromServer() {
-    if (!this.fileService) throw "Can't find file service";
-    if (!this.themeService) throw "Can't find theme service";
+  //   this.fileService = new FileService(this.themeFolderName, this.contoboxTypes);
+  // }
 
-    const pulledFilesData = await this.themeService.pullMany(this.fileService.workingFiles);
-    this.fileService.createFiles(pulledFilesData);
+  // private async loadFromLocal() {
+  //   if (!this.fileService) throw "Can't find file service";
+  //   if (!this.themeService) throw "Can't find theme service";
 
-    Message.log('All styles pulled successfully!');
-  }
+  //   this.fileService.createFiles();
+  //   const workingFiles = this.fileService.getAllFilesDataFromWorkDir();
+  //   await this.themeService.pushMany(workingFiles);
 
-  private startWatchingFiles() {
-    if (!this.fileService) throw "Can't find file service";
-    if (!this.themeService) throw "Can't find theme service";
+  //   Message.log('All styles pushed successfully!');
+  // }
 
-    this.fileService.watchWorkDir(this.themeService.push.bind(this.themeService));
-  }
+  // private async loadFromServer() {
+  //   if (!this.fileService) throw "Can't find file service";
+  //   if (!this.themeService) throw "Can't find theme service";
+
+  //   const pulledFilesData = await this.themeService.pullMany(this.fileService.workingFiles);
+  //   this.fileService.createFiles(pulledFilesData);
+
+  //   Message.log('All styles pulled successfully!');
+  // }
+
+  // private startWatchingFiles() {
+  //   if (!this.fileService) throw "Can't find file service";
+  //   if (!this.themeService) throw "Can't find theme service";
+
+  //   this.fileService.watchWorkDir(this.themeService.push.bind(this.themeService));
+  // }
 }
 
 const authOptions: ProgramOptions['auth'] = {
