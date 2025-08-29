@@ -1,0 +1,32 @@
+/* =================
+	fonts
+   ================= */
+@font-face {
+  font-family: 'Gotham';
+  src: url('https://am.contobox.com/cbdata/fonts/Gotham/Gotham-Book.woff') format('woff'),
+    url('https://am.contobox.com/cbdata/fonts/Gotham/Gotham-Book.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gotham';
+  src: url('https://am.contobox.com/cbdata/fonts/Gotham/Gotham-Medium.woff') format('woff'),
+    url('https://am.contobox.com/cbdata/fonts/Gotham/Gotham-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gotham';
+  src: url('https://am.contobox.com/cbdata/fonts/Gotham/Gotham-Bold.woff') format('woff'),
+    url('https://am.contobox.com/cbdata/fonts/Gotham/Gotham-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+#panel,
+li.tab-button {
+  font-family: 'Gotham', sans-serif;
+  user-select: none;
+}
