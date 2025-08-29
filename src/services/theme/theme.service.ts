@@ -26,14 +26,25 @@ export class ThemeService {
       },
     });
 
-    const data = (await response.json()) as { media: string };
+    const isError = response.redirected;
 
-    Logger.done('Pulled', `${fileData.serverFileName} (${fileData.themeType})`, true);
-    return data.media;
+    if (isError) {
+      Logger.error(
+        'Error while pulling',
+        `${fileData.serverFileName} (${fileData.themeType})`,
+        true,
+      );
+
+      return '';
+    } else {
+      const data = (await response.json()) as { media: string };
+      Logger.done('Pulled', `${fileData.serverFileName} (${fileData.themeType})`, true);
+      return data.media;
+    }
   }
 
   async push(fileData: FileDataWithStyles) {
-    await fetch(PUSH_THEME_ENDPOINT, {
+    const response = await fetch(PUSH_THEME_ENDPOINT, {
       method: 'POST',
       body: this.getRequestBody(fileData),
       headers: {
@@ -42,7 +53,17 @@ export class ThemeService {
       },
     });
 
-    Logger.done('Pushed', `${fileData.serverFileName} (${fileData.themeType})`, true);
+    const isError = response.redirected;
+
+    if (isError) {
+      Logger.error(
+        'Error while pushing',
+        `${fileData.serverFileName} (${fileData.themeType})`,
+        true,
+      );
+    } else {
+      Logger.done('Pushed', `${fileData.serverFileName} (${fileData.themeType})`, true);
+    }
   }
 
   async pushMany(files: FileDataWithStyles[]) {

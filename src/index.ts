@@ -1,79 +1,63 @@
 import type { StylesFrom } from './type';
-import type { FileType } from './files/file.type';
-import type { AuthOptions } from './auth/auth.type';
-import type { ThemeOptions } from './theme/theme.type';
+import type { FileType } from './services/contobox-files/contobox-files.type';
 
 import { resolve } from 'path';
 import { exec } from 'child_process';
 import { input, select, checkbox, confirm } from '@inquirer/prompts';
+import { watch } from 'fs';
 
-import { AuthService } from './auth/auth.service';
-import { ThemeService } from './theme/theme.service';
-import { FileService } from './files/files.service';
+import { FileService } from './services/files/files.service';
+import { AuthService } from './services/auth/auth.service';
+import { ContoboxFilesService } from './services/contobox-files/contobox-files.service';
+import { ThemeService } from './services/theme/theme.service';
 
-import { Message } from './message/message';
+import { Logger } from './logger/logger';
 
-import { WORKING_DIR, ASSETS_DIR } from './constant';
-
-type ProgramOptions = {
-  auth: AuthOptions;
-  theme: Omit<ThemeOptions, 'SID' | 'themeName'>;
-};
+import { WORKING_DIR, ASSETS_DIR, SID_DIR } from './constant';
 
 class Program {
-  // options
-  options: ProgramOptions;
-  SID: string | null;
-
-  // services
-  // private readonly authService: AuthService;
-  // private themeService: ThemeService | null;
-  // private fileService: FileService | null;
+  private readonly authService: AuthService;
+  private contoboxFilesService: ContoboxFilesService | null = null;
+  private themeService: ThemeService | null = null;
 
   private readonly stylesFromList: StylesFrom[];
   private readonly availableTypesList: FileType[];
 
   private stylesFrom: StylesFrom | null;
-  private contoboxTypes: FileType[] | null;
+  private contoboxFileTypes: FileType[] | null;
   private io: number | null;
   private themeName: string | null;
   private themeFolderName: string | null;
 
-  constructor(options: ProgramOptions) {
-    // options
-    this.options = options;
-    this.SID = null;
-
-    // services
-    // this.authService = new AuthService(this.options.auth);
-    // this.themeService = null;
-    // this.fileService = null;
+  constructor() {
+    this.authService = new AuthService();
 
     this.stylesFromList = ['server', 'local'];
     this.availableTypesList = ['desktop', 'mobile', 'fallback', 'banner'];
 
     this.stylesFrom = null;
-    this.contoboxTypes = null;
+    this.contoboxFileTypes = null;
     this.io = null;
     this.themeName = null;
     this.themeFolderName = null;
   }
 
   async init() {
+    FileService.createFile(SID_DIR, '', { showError: false });
+
+    await this.authService.logIn();
     await this.start();
 
-    // await this.logIn();
+    this.initThemeService();
+    this.initContoboxFilesService();
 
-    // this.initThemeService();
-    // this.initFileService();
+    if (this.stylesFrom === 'server') {
+      await this.loadFromServer();
+    } else {
+      await this.loadFromLocal();
+    }
 
-    // if (this.stylesFrom === 'server') {
-    //   await this.loadFromServer();
-    // } else {
-    //   await this.loadFromLocal();
-    // }
-
-    // this.startWatchingFiles();
+    this.startWatchingFiles();
   }
 
   private async start() {
@@ -91,7 +75,7 @@ class Program {
       choices: this.stylesFromList,
     });
 
-    this.contoboxTypes = await checkbox<FileType>({
+    this.contoboxFileTypes = await checkbox<FileType>({
       message: `Contobox type:`,
       choices: this.availableTypesList,
       required: true,
@@ -135,78 +119,59 @@ class Program {
     exec(`${openIn[openInSelected]} "${dir}"`);
   }
 
-  // private async logIn() {
-  //   await this.authService.logIn();
-  //   this.SID = this.authService.getSID();
+  private initThemeService() {
+    if (!this.themeName) throw "Can't get theme name or SID!";
 
-  //   if (!this.SID) {
-  //     throw 'Error while logging in, please check username/password';
-  //   }
-  // }
+    this.themeService = new ThemeService(this.themeName);
+  }
 
-  // private initThemeService() {
-  //   if (!this.themeName || !this.SID) {
-  //     throw "Can't get theme name or SID!";
-  //   }
+  private initContoboxFilesService() {
+    if (!this.themeFolderName || !this.contoboxFileTypes)
+      throw "Can't get theme folder name or contobox types!";
 
-  //   this.themeService = new ThemeService({
-  //     ...this.options.theme,
-  //     themeName: this.themeName,
-  //     SID: this.SID,
-  //   });
-  // }
+    this.contoboxFilesService = new ContoboxFilesService(
+      this.themeFolderName!,
+      this.contoboxFileTypes!,
+    );
+  }
 
-  // private initFileService() {
-  //   if (!this.themeFolderName || !this.contoboxTypes) {
-  //     throw "Can't get theme folder name or contobox types!";
-  //   }
+  private async loadFromLocal() {
+    if (!this.contoboxFilesService) throw "Can't find contobox files service";
+    if (!this.themeService) throw "Can't find theme service";
 
-  //   this.fileService = new FileService(this.themeFolderName, this.contoboxTypes);
-  // }
+    this.contoboxFilesService.createFiles();
+    const workingFiles = this.contoboxFilesService.getAllFilesData();
+    await this.themeService.pushMany(workingFiles);
+  }
 
-  // private async loadFromLocal() {
-  //   if (!this.fileService) throw "Can't find file service";
-  //   if (!this.themeService) throw "Can't find theme service";
+  private async loadFromServer() {
+    if (!this.contoboxFilesService) throw "Can't find contobox files service";
+    if (!this.themeService) throw "Can't find theme service";
 
-  //   this.fileService.createFiles();
-  //   const workingFiles = this.fileService.getAllFilesDataFromWorkDir();
-  //   await this.themeService.pushMany(workingFiles);
+    const pulledFilesData = await this.themeService.pullMany(
+      this.contoboxFilesService.workingFiles,
+    );
+    this.contoboxFilesService.createFiles(pulledFilesData);
+  }
 
-  //   Message.log('All styles pushed successfully!');
-  // }
+  private startWatchingFiles() {
+    if (!this.contoboxFilesService) throw "Can't find contobox files service";
+    if (!this.themeService) throw "Can't find theme service";
 
-  // private async loadFromServer() {
-  //   if (!this.fileService) throw "Can't find file service";
-  //   if (!this.themeService) throw "Can't find theme service";
+    const workDir = this.contoboxFilesService.cssWorkingDir;
+    const workDirFileNames = FileService.readDir(workDir);
 
-  //   const pulledFilesData = await this.themeService.pullMany(this.fileService.workingFiles);
-  //   this.fileService.createFiles(pulledFilesData);
+    workDirFileNames.forEach(fileName => {
+      const file = this.contoboxFilesService!.getFileDataWithStyles(fileName);
 
-  //   Message.log('All styles pulled successfully!');
-  // }
-
-  // private startWatchingFiles() {
-  //   if (!this.fileService) throw "Can't find file service";
-  //   if (!this.themeService) throw "Can't find theme service";
-
-  //   this.fileService.watchWorkDir(this.themeService.push.bind(this.themeService));
-  // }
+      if (file) {
+        watch(resolve(workDir, file.localFileName), () => {
+          this.themeService!.push(file);
+        });
+      }
+    });
+  }
 }
 
-const authOptions: ProgramOptions['auth'] = {
-  username: Bun.env.USERNAME!,
-  password: Bun.env.PASSWORD!,
-  endpoint: {
-    login: Bun.env.LOGIN_ENDPOINT!,
-  },
-};
-
-const themeOptions: ProgramOptions['theme'] = {
-  endpoint: {
-    pull: Bun.env.PULL_THEME_ENDPOINT!,
-    push: Bun.env.PUSH_THEME_ENDPOINT!,
-  },
-};
-
-const program = new Program({ auth: authOptions, theme: themeOptions });
+const program = new Program();
 program.init();

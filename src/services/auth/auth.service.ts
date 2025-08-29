@@ -8,34 +8,37 @@ import { Logger } from '../../logger/logger';
 import { USERNAME, PASSWORD, LOGIN_ENDPOINT, SID_DIR } from '../../constant';
 
 export class AuthService {
-  private SID: string = FileService.readFile(SID_DIR);
-
   async logIn() {
     Logger.log('Logging in ...');
 
-    if (!this.SID) {
+    let SID = FileService.readFile(SID_DIR);
+
+    if (!SID) {
       const pageResponse = await fetch(LOGIN_ENDPOINT);
       const cookieString = pageResponse.headers.getSetCookie()[0];
       if (!cookieString) throw "Can't get cookie!";
 
-      this.SID = Cookie.parse(cookieString).value;
-      FileService.writeFile(SID_DIR, this.SID);
+      let SID = Cookie.parse(cookieString).value
+      FileService.writeFile(SID_DIR, SID);
     }
 
-    await fetch(LOGIN_ENDPOINT, {
+    const response = await fetch(LOGIN_ENDPOINT, {
       method: 'POST',
       body: new URLSearchParams({ username: USERNAME, password: PASSWORD }).toString(),
       headers: {
-        cookie: new Cookie('SID', this.SID).serialize(),
+        cookie: new Cookie('SID', SID).serialize(),
         'content-type': 'application/x-www-form-urlencoded',
       },
     });
 
-    Logger.clear();
-    Logger.success('Success', 'Logged in successfully!\n');
+    console.log(response);
+    
 
-    await timers.setTimeout(1000);
-    Logger.clear();
+    // Logger.clear();
+    // Logger.success('Success', 'Logged in successfully!\n');
+
+    // await timers.setTimeout(1000);
+    // Logger.clear();
   }
 
   async updateSID() {}
