@@ -1,4 +1,4 @@
-import type { FileData, FileDataWithStyles } from './theme.type';
+import type { FileData, FileDataWithStyles } from '../contobox-files/contobox-files.type';
 
 import { Cookie } from 'bun';
 import { FileService } from '../files/files.service';
