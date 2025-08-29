@@ -1,68 +1,55 @@
 import type { StylesFrom } from './type';
-import type { FileType } from './files/file.type';
-import type { AuthOptions } from './auth/auth.type';
-import type { ThemeOptions } from './theme/theme.type';
+import type { FileType } from './services/contobox-files/contobox-files.type';
 
 import { resolve } from 'path';
+import { exec } from 'child_process';
 import { input, select, checkbox, confirm } from '@inquirer/prompts';
+import { watch } from 'fs';
 
-import { AuthService } from './auth/auth.service';
-import { ThemeService } from './theme/theme.service';
-import { FileService } from './files/files.service';
+import { FileService } from './services/files/files.service';
+import { AuthService } from './services/auth/auth.service';
+import { ContoboxFilesService } from './services/contobox-files/contobox-files.service';
+import { ThemeService } from './services/theme/theme.service';
 
-import { Message } from './message/message';
+import { Logger } from './logger/logger';
 
-type ProgramOptions = {
-  auth: AuthOptions;
-  theme: Omit<ThemeOptions, 'SID' | 'themeName'>;
-};
+import { WORKING_DIR, ASSETS_DIR, SID_DIR } from './constant';
 
 class Program {
-  // options
-  options: ProgramOptions;
-  SID: string | null;
-
-  // services
   private readonly authService: AuthService;
-  private themeService: ThemeService | null;
-  private fileService: FileService | null;
+  private contoboxFilesService: ContoboxFilesService | null = null;
+  private themeService: ThemeService | null = null;
 
   private readonly stylesFromList: StylesFrom[];
   private readonly availableTypesList: FileType[];
 
   private stylesFrom: StylesFrom | null;
-  private contoboxTypes: FileType[] | null;
+  private contoboxFileTypes: FileType[] | null;
   private io: number | null;
   private themeName: string | null;
   private themeFolderName: string | null;
 
-  constructor(options: ProgramOptions) {
-    // options
-    this.options = options;
-    this.SID = null;
-
-    // services
-    this.authService = new AuthService(this.options.auth);
-    this.themeService = null;
-    this.fileService = null;
+  constructor() {
+    this.authService = new AuthService();
 
     this.stylesFromList = ['server', 'local'];
     this.availableTypesList = ['desktop', 'mobile', 'fallback', 'banner'];
 
     this.stylesFrom = null;
-    this.contoboxTypes = null;
+    this.contoboxFileTypes = null;
     this.io = null;
     this.themeName = null;
     this.themeFolderName = null;
   }
 
   async init() {
+    FileService.createFile(SID_DIR, '', { showError: false });
+
+    await this.authService.logIn();
     await this.start();
 
-    await this.logIn();
-
     this.initThemeService();
-    this.initFileService();
+    this.initContoboxFilesService();
 
     if (this.stylesFrom === 'server') {
       await this.loadFromServer();
@@ -74,106 +61,121 @@ class Program {
   }
 
   private async start() {
+    await this.askQuestions();
+
+    const themeWorkingDir = resolve(WORKING_DIR, this.themeFolderName!);
+
+    this.createWorkingDir(themeWorkingDir);
+    await this.openWorkDir(themeWorkingDir);
+  }
+
+  private async askQuestions() {
     this.stylesFrom = await select<StylesFrom>({
       message: `Get style from:`,
       choices: this.stylesFromList,
     });
 
-    this.contoboxTypes = await checkbox<FileType>({
+    this.contoboxFileTypes = await checkbox<FileType>({
       message: `Contobox type:`,
       choices: this.availableTypesList,
       required: true,
     });
 
     this.io = parseInt(await input({ message: 'Contobox IO:', required: true }));
-    this.themeName = await input({ message: 'Theme name:', required: true });
-
-    const confirmed = await confirm({ message: 'Do you want to continue?', default: false });
-
-    if (!confirmed) process.exit();
+    this.themeName = (await input({ message: 'Theme name:', required: true })).trim();
 
     this.themeFolderName = `IO ${this.io} | ${this.themeName}`;
 
-    Message.log(
-      `"${this.themeFolderName}" will creating after successful login in path\nfile://${resolve(
-        process.cwd(),
-        'contoboxes',
-      )} | Ctrl+Click to open folder`,
+    const confirmed = await confirm({
+      message: `Folder "\x1b[36m${this.themeFolderName}\x1b[0m" will be created in path: \x1b[36m${WORKING_DIR}\x1b[0m.\n Do you want to continue?`,
+      default: false,
+    });
+
+    if (!confirmed) process.exit();
+  }
+
+  private createWorkingDir(dir: string) {
+    FileService.createFolder(dir);
+    FileService.createFolder(resolve(dir, '.vscode'));
+
+    FileService.copy(
+      resolve(ASSETS_DIR, '.vscode', 'settings.json'),
+      resolve(dir, '.vscode', 'settings.json'),
     );
   }
 
-  private async logIn() {
-    await this.authService.logIn();
-    this.SID = this.authService.getSID();
+  private async openWorkDir(dir: string) {
+    const openIn = {
+      None: '',
+      Folder: 'open',
+      VSCode: 'code',
+      WebStorm: 'webstorm',
+    };
 
-    if (!this.SID) {
-      throw 'Error while logging in, please check username/password';
-    }
+    const openInSelected = await select<keyof typeof openIn>({
+      message: `Open in:`,
+      choices: Object.keys(openIn),
+    });
+
+    const cmd = openIn[openInSelected];
+
+    if (cmd) exec(`${cmd} "${dir}"`);
   }
 
   private initThemeService() {
-    if (!this.themeName || !this.SID) {
-      throw "Can't get theme name or SID!";
-    }
+    if (!this.themeName) throw "Can't get theme name or SID!";
 
-    this.themeService = new ThemeService({
-      ...this.options.theme,
-      themeName: this.themeName,
-      SID: this.SID,
-    });
+    this.themeService = new ThemeService(this.themeName);
   }
 
-  private initFileService() {
-    if (!this.themeFolderName || !this.contoboxTypes) {
+  private initContoboxFilesService() {
+    if (!this.themeFolderName || !this.contoboxFileTypes)
       throw "Can't get theme folder name or contobox types!";
-    }
 
-    this.fileService = new FileService(this.themeFolderName, this.contoboxTypes);
+    this.contoboxFilesService = new ContoboxFilesService(
+      this.themeFolderName!,
+      this.contoboxFileTypes!,
+    );
   }
 
   private async loadFromLocal() {
-    if (!this.fileService) throw "Can't find file service";
+    if (!this.contoboxFilesService) throw "Can't find contobox files service";
     if (!this.themeService) throw "Can't find theme service";
 
-    this.fileService.createFiles();
-    const workingFiles = this.fileService.getAllFilesDataFromWorkDir();
+    this.contoboxFilesService.createFiles();
+    const workingFiles = this.contoboxFilesService.getAllFilesDataWithStyles();
     await this.themeService.pushMany(workingFiles);
-
-    Message.log('All styles pushed successfully!');
   }
 
   private async loadFromServer() {
-    if (!this.fileService) throw "Can't find file service";
+    if (!this.contoboxFilesService) throw "Can't find contobox files service";
     if (!this.themeService) throw "Can't find theme service";
 
-    const pulledFilesData = await this.themeService.pullMany(this.fileService.workingFiles);
-    this.fileService.createFiles(pulledFilesData);
-
-    Message.log('All styles pulled successfully!');
+    const pulledFilesData = await this.themeService.pullMany(
+      this.contoboxFilesService.workingFiles,
+    );
+    this.contoboxFilesService.createFiles(pulledFilesData);
   }
 
   private startWatchingFiles() {
-    if (!this.fileService) throw "Can't find file service";
+    if (!this.contoboxFilesService) throw "Can't find contobox files service";
     if (!this.themeService) throw "Can't find theme service";
 
-    this.fileService.watchWorkDir(this.themeService.push.bind(this.themeService));
+    const workDir = this.contoboxFilesService.cssWorkingDir;
+    const workDirFileNames = FileService.readDir(workDir);
+
+    workDirFileNames.forEach(fileName => {
+      const file = this.contoboxFilesService!.getFileData(fileName);
+
+      if (file) {
+        watch(resolve(workDir, file.localFileName), () => {
+          const newFileData = this.contoboxFilesService!.getFileDataWithStyles(file.localFileName);
+          if (newFileData) this.themeService!.push(newFileData);
+        });
+      }
+    });
   }
 }
 
-const authOptions: ProgramOptions['auth'] = {
-  username: Bun.env.USERNAME!,
-  password: Bun.env.PASSWORD!,
-  endpoint: {
-    login: Bun.env.LOGIN_ENDPOINT!,
-  },
-};
-
-const themeOptions: ProgramOptions['theme'] = {
-  endpoint: {
-    pull: Bun.env.PULL_THEME_ENDPOINT!,
-    push: Bun.env.PUSH_THEME_ENDPOINT!,
-  },
-};
-
-const program = new Program({ auth: authOptions, theme: themeOptions });
+const program = new Program();
 program.init();
