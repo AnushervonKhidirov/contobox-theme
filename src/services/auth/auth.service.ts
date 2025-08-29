@@ -31,14 +31,11 @@ export class AuthService {
       },
     });
 
-    console.log(response);
-    
+    Logger.clear();
+    Logger.success('Success', 'Logged in successfully!\n');
 
-    // Logger.clear();
-    // Logger.success('Success', 'Logged in successfully!\n');
-
-    // await timers.setTimeout(1000);
-    // Logger.clear();
+    await timers.setTimeout(1000);
+    Logger.clear();
   }
 
   async updateSID() {}
