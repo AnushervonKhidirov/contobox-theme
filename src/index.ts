@@ -161,7 +161,7 @@ class Program {
 }
 
 const authOptions: ProgramOptions['auth'] = {
-  username: Bun.env.LOGIN!,
+  username: Bun.env.USERNAME!,
   password: Bun.env.PASSWORD!,
   endpoint: {
     login: Bun.env.LOGIN_ENDPOINT!,
