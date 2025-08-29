@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 
-export const USERNAME = Bun.env.USERNAME!;
+export const USERNAME = Bun.env.USER_NAME!;
 export const PASSWORD = Bun.env.PASSWORD!;
 
 export const LOGIN_ENDPOINT = Bun.env.LOGIN_ENDPOINT!;

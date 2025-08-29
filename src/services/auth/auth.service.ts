@@ -18,7 +18,7 @@ export class AuthService {
       const cookieString = pageResponse.headers.getSetCookie()[0];
       if (!cookieString) throw "Can't get cookie!";
 
-      let SID = Cookie.parse(cookieString).value
+      let SID = Cookie.parse(cookieString).value;
       FileService.writeFile(SID_DIR, SID);
     }
 
@@ -31,11 +31,18 @@ export class AuthService {
       },
     });
 
-    Logger.clear();
-    Logger.success('Success', 'Logged in successfully!\n');
+    const isError = !response.redirected;
 
-    await timers.setTimeout(1000);
-    Logger.clear();
+    if (isError) {
+      Logger.error('Error', 'Wrong username or password');
+      process.exit();
+    } else {
+      Logger.clear();
+      Logger.success('Success', 'Logged in successfully!\n');
+
+      await timers.setTimeout(1000);
+      Logger.clear();
+    }
   }
 
   async updateSID() {}
