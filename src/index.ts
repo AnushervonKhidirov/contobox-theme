@@ -106,6 +106,7 @@ class Program {
 
   private async openWorkDir(dir: string) {
     const openIn = {
+      None: '',
       Folder: 'open',
       VSCode: 'code',
       WebStorm: 'webstorm',
@@ -116,7 +117,9 @@ class Program {
       choices: Object.keys(openIn),
     });
 
-    exec(`${openIn[openInSelected]} "${dir}"`);
+    const cmd = openIn[openInSelected];
+
+    if (cmd) exec(`${cmd} "${dir}"`);
   }
 
   private initThemeService() {
@@ -140,7 +143,7 @@ class Program {
     if (!this.themeService) throw "Can't find theme service";
 
     this.contoboxFilesService.createFiles();
-    const workingFiles = this.contoboxFilesService.getAllFilesData();
+    const workingFiles = this.contoboxFilesService.getAllFilesDataWithStyles();
     await this.themeService.pushMany(workingFiles);
   }
 
@@ -162,11 +165,12 @@ class Program {
     const workDirFileNames = FileService.readDir(workDir);
 
     workDirFileNames.forEach(fileName => {
-      const file = this.contoboxFilesService!.getFileDataWithStyles(fileName);
+      const file = this.contoboxFilesService!.getFileData(fileName);
 
       if (file) {
         watch(resolve(workDir, file.localFileName), () => {
-          this.themeService!.push(file);
+          const newFileData = this.contoboxFilesService!.getFileDataWithStyles(file.localFileName);
+          if (newFileData) this.themeService!.push(newFileData);
         });
       }
     });

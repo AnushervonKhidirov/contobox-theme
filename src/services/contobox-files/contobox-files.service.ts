@@ -37,6 +37,19 @@ export class ContoboxFilesService {
   getAllFilesData() {
     const fileNames = FileService.readDir(this.cssWorkingDir);
 
+    const workDitFilesData: FileData[] = [];
+
+    fileNames.forEach(fileName => {
+      const fileData = this.getFileData(fileName);
+      if (fileData) workDitFilesData.push(fileData);
+    });
+
+    return workDitFilesData;
+  }
+
+  getAllFilesDataWithStyles() {
+    const fileNames = FileService.readDir(this.cssWorkingDir);
+
     const workDitFilesData: FileDataWithStyles[] = [];
 
     fileNames.forEach(fileName => {
@@ -45,6 +58,12 @@ export class ContoboxFilesService {
     });
 
     return workDitFilesData;
+  }
+
+  getFileData(fileName: string): FileData | null {
+    const fileData = this.getFileDataByLocalFileName(fileName);
+    if (!fileData) return null;
+    return fileData;
   }
 
   getFileDataWithStyles(fileName: string): FileDataWithStyles | null {
