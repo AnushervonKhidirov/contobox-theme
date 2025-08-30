@@ -17,52 +17,60 @@ export class ThemeService {
   }
 
   async pull(fileData: FileData) {
-    const response = await fetch(PULL_THEME_ENDPOINT, {
-      method: 'POST',
-      body: this.getRequestBody(fileData),
-      headers: {
-        cookie: new Cookie('SID', this.SID).serialize(),
-        'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-      },
-    });
+    try {
+      const response = await fetch(PULL_THEME_ENDPOINT, {
+        method: 'POST',
+        body: this.getRequestBody(fileData),
+        headers: {
+          cookie: new Cookie('SID', this.SID).serialize(),
+          'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        },
+      });
 
-    const isError = response.redirected;
+      const isError = response.redirected;
 
-    if (isError) {
-      Logger.error(
-        'Error while pulling',
-        `${fileData.serverFileName} (${fileData.themeType})`,
-        true,
-      );
+      if (isError) {
+        Logger.error(
+          'Error while pulling',
+          `${fileData.serverFileName} (${fileData.themeType})`,
+          true,
+        );
 
-      return '';
-    } else {
-      const data = (await response.json()) as { media: string };
-      Logger.done('Pulled', `${fileData.serverFileName} (${fileData.themeType})`, true);
-      return data.media;
+        return '';
+      } else {
+        const data = (await response.json()) as { media: string };
+        Logger.done('Pulled', `${fileData.serverFileName} (${fileData.themeType})`, true);
+        return data.media;
+      }
+    } catch (err) {
+      console.log(err);
     }
   }
 
   async push(fileData: FileDataWithStyles) {
-    const response = await fetch(PUSH_THEME_ENDPOINT, {
-      method: 'POST',
-      body: this.getRequestBody(fileData),
-      headers: {
-        cookie: new Cookie('SID', this.SID).serialize(),
-        'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-      },
-    });
+    try {
+      const response = await fetch(PUSH_THEME_ENDPOINT, {
+        method: 'POST',
+        body: this.getRequestBody(fileData),
+        headers: {
+          cookie: new Cookie('SID', this.SID).serialize(),
+          'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        },
+      });
 
-    const isError = response.redirected;
+      const isError = response.redirected;
 
-    if (isError) {
-      Logger.error(
-        'Error while pushing',
-        `${fileData.serverFileName} (${fileData.themeType})`,
-        true,
-      );
-    } else {
-      Logger.done('Pushed', `${fileData.serverFileName} (${fileData.themeType})`, true);
+      if (isError) {
+        Logger.error(
+          'Error while pushing',
+          `${fileData.serverFileName} (${fileData.themeType})`,
+          true,
+        );
+      } else {
+        Logger.done('Pushed', `${fileData.serverFileName} (${fileData.themeType})`, true);
+      }
+    } catch (err) {
+      console.log(err);
     }
   }
 

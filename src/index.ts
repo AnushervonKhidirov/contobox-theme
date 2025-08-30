@@ -4,7 +4,7 @@ import type { FileType } from './services/contobox-files/contobox-files.type';
 import { resolve } from 'path';
 import { exec } from 'child_process';
 import { input, select, checkbox, confirm } from '@inquirer/prompts';
-import { watch } from 'fs';
+import { existsSync, watch } from 'fs';
 
 import { FileService } from './services/files/files.service';
 import { AuthService } from './services/auth/auth.service';
@@ -63,7 +63,7 @@ class Program {
 
     const themeWorkingDir = resolve(WORKING_DIR, this.themeFolderName!);
 
-    this.createWorkingDir(themeWorkingDir);
+    await this.createWorkingDir(themeWorkingDir);
     await this.openWorkDir(themeWorkingDir);
   }
 
@@ -92,7 +92,18 @@ class Program {
     if (!confirmed) process.exit();
   }
 
-  private createWorkingDir(dir: string) {
+  private async createWorkingDir(dir: string) {
+    const isExist = existsSync(dir);
+
+    if (isExist) {
+      const overwrite = await confirm({
+        message: `Folder already exists\n Do you want to overwrite it?`,
+        default: false,
+      });
+
+      if (!overwrite) process.exit();
+    }
+
     FileService.createFolder(dir);
     FileService.createFolder(resolve(dir, '.vscode'));
 
