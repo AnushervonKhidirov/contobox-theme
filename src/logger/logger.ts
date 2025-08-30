@@ -21,7 +21,7 @@ export class Logger {
       ? Logger.withDate(fullText, text.length + additionalText.length, true)
       : fullText;
 
-   process.stdout.write(newText + '\n');
+    process.stdout.write(newText + '\n');
   }
 
   static error(text: string, additionalText: string, includeTime: boolean = false) {
@@ -31,7 +31,7 @@ export class Logger {
       ? Logger.withDate(fullText, text.length + additionalText.length, true)
       : fullText;
 
-   process.stdout.write(newText + '\n');
+    process.stdout.write(newText + '\n');
   }
 
   static done(text: string, additionalText: string, includeTime: boolean = false) {
@@ -41,21 +41,7 @@ export class Logger {
       ? Logger.withDate(fullText, text.length + additionalText.length, true)
       : fullText;
 
-   process.stdout.write(newText + '\n');
-  }
-
-  private static withDateBad(text: string, isColoredText = false) {
-    const terminalWidth = process.stdout.columns;
-    const textLength = isColoredText ? text.length : text.length;
-
-    const timeText = new Date().toLocaleTimeString();
-
-    const textWithDashes = Array.from({ length: terminalWidth - timeText.length }, (_, i) => {
-      const space = i === textLength || i === terminalWidth - timeText.length - 1 ? ' ' : '-';
-      return textLength > i ? text[i] : space;
-    });
-
-    return textWithDashes.join('') + timeText;
+    process.stdout.write(newText + '\n');
   }
 
   private static withDate(text: string, textLength: number, isColoredText = false) {

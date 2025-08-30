@@ -1,14 +1,4 @@
-import type { FileDataWithStyles } from '../contobox-files/contobox-files.type';
-
-import {
-  existsSync,
-  mkdirSync,
-  copyFileSync,
-  readFileSync,
-  writeFileSync,
-  readdirSync,
-  watch,
-} from 'fs';
+import { existsSync, mkdirSync, copyFileSync, readFileSync, writeFileSync, readdirSync } from 'fs';
 
 type CreateFileOptions = {
   showError: boolean;
@@ -47,6 +37,4 @@ export class FileService {
 
     copyFileSync(pathFrom, pathTo);
   }
-
-  static watchFile() {}
 }

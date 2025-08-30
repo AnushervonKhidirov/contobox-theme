@@ -1,0 +1,55 @@
+{
+    "prettier.arrowParens": "avoid",
+    "prettier.jsxSingleQuote": false,
+    "prettier.semi": true,
+    "prettier.trailingComma": "all",
+    "prettier.tabWidth": 2,
+    "prettier.singleQuote": true,
+    "prettier.printWidth": 100,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": "active",
+    "editor.tabSize": 2,
+    "editor.linkedEditing": true,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "todohighlight.keywords": [
+        {
+            "text": "NOTE:",
+            "color": "#fff",
+            "borderRadius": "3px",
+            "backgroundColor": "rebeccapurple",
+            "overviewRulerColor": "grey"
+        },
+        {
+            "text": "HACK:",
+            "color": "#fff",
+            "borderRadius": "3px",
+            "isWholeLine": false,
+            "backgroundColor": "gray"
+        },
+        {
+            "text": "FIXME:",
+            "color": "#fff",
+            "borderRadius": "3px",
+            "isWholeLine": false,
+            "backgroundColor": "red"
+        },
+        {
+            "text": "TODO:",
+            "color": "#fff",
+            "borderRadius": "3px",
+            "backgroundColor": "green"
+        }
+    ],
+    "cSpell.userWords": [
+        "contobox",
+        "Contobox"
+    ]
+}
