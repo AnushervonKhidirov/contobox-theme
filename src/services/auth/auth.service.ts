@@ -16,7 +16,7 @@ export class AuthService {
     if (!SID) {
       const pageResponse = await fetch(LOGIN_ENDPOINT);
       const cookieString = pageResponse.headers.getSetCookie()[0];
-      if (!cookieString) throw "Can't get cookie!";
+      if (!cookieString) throw new Error('Cookie not found from response');
 
       let SID = Cookie.parse(cookieString).value;
       FileService.writeFile(SID_DIR, SID);
@@ -44,6 +44,4 @@ export class AuthService {
       Logger.clear();
     }
   }
-
-  async updateSID() {}
 }

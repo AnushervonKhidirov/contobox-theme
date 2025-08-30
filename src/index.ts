@@ -11,8 +11,6 @@ import { AuthService } from './services/auth/auth.service';
 import { ContoboxFilesService } from './services/contobox-files/contobox-files.service';
 import { ThemeService } from './services/theme/theme.service';
 
-import { Logger } from './logger/logger';
-
 import { WORKING_DIR, ASSETS_DIR, SID_DIR } from './constant';
 
 class Program {
@@ -123,24 +121,24 @@ class Program {
   }
 
   private initThemeService() {
-    if (!this.themeName) throw "Can't get theme name or SID!";
+    if (!this.themeName) throw new Error('Theme name not found!');
 
     this.themeService = new ThemeService(this.themeName);
   }
 
   private initContoboxFilesService() {
-    if (!this.themeFolderName || !this.contoboxFileTypes)
-      throw "Can't get theme folder name or contobox types!";
+    if (!this.themeFolderName) throw new Error('Theme folder name not found');
+    if (!this.contoboxFileTypes) throw new Error('Contobox file types not found');
 
     this.contoboxFilesService = new ContoboxFilesService(
-      this.themeFolderName!,
-      this.contoboxFileTypes!,
+      this.themeFolderName,
+      this.contoboxFileTypes,
     );
   }
 
   private async loadFromLocal() {
-    if (!this.contoboxFilesService) throw "Can't find contobox files service";
-    if (!this.themeService) throw "Can't find theme service";
+    if (!this.contoboxFilesService) throw new Error('ContoboxFilesService not found');
+    if (!this.themeService) throw new Error('ThemeService not found');
 
     this.contoboxFilesService.createFiles();
     const workingFiles = this.contoboxFilesService.getAllFilesDataWithStyles();
@@ -148,8 +146,8 @@ class Program {
   }
 
   private async loadFromServer() {
-    if (!this.contoboxFilesService) throw "Can't find contobox files service";
-    if (!this.themeService) throw "Can't find theme service";
+    if (!this.contoboxFilesService) throw new Error('ContoboxFilesService not found');
+    if (!this.themeService) throw new Error('ThemeService not found');
 
     const pulledFilesData = await this.themeService.pullMany(
       this.contoboxFilesService.workingFiles,
@@ -158,8 +156,8 @@ class Program {
   }
 
   private startWatchingFiles() {
-    if (!this.contoboxFilesService) throw "Can't find contobox files service";
-    if (!this.themeService) throw "Can't find theme service";
+    if (!this.contoboxFilesService) throw new Error('ContoboxFilesService not found');
+    if (!this.themeService) throw new Error('ThemeService not found');
 
     const workDir = this.contoboxFilesService.cssWorkingDir;
     const workDirFileNames = FileService.readDir(workDir);
