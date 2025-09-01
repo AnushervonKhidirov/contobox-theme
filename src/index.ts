@@ -11,7 +11,7 @@ import { AuthService } from './services/auth/auth.service';
 import { ContoboxFilesService } from './services/contobox-files/contobox-files.service';
 import { ThemeService } from './services/theme/theme.service';
 
-import { WORKING_DIR, ASSETS_DIR, SID_DIR } from './constant';
+import { RELOGIN_TIMEOUT, WORKING_DIR, ASSETS_DIR, SID_DIR } from './constant';
 
 class Program {
   private readonly authService: AuthService;
@@ -21,23 +21,19 @@ class Program {
   private readonly stylesFromList: StylesFrom[];
   private readonly availableTypesList: FileType[];
 
-  private stylesFrom: StylesFrom | null;
-  private contoboxFileTypes: FileType[] | null;
-  private io: number | null;
-  private themeName: string | null;
-  private themeFolderName: string | null;
+  private stylesFrom: StylesFrom | null = null;
+  private contoboxFileTypes: FileType[] | null = null;
+  private io: number | null = null;
+  private themeName: string | null = null;
+  private themeFolderName: string | null = null;
+
+  private loginTimerId: NodeJS.Timeout | null = null;
 
   constructor() {
     this.authService = new AuthService();
 
     this.stylesFromList = ['server', 'local'];
     this.availableTypesList = ['desktop', 'mobile', 'fallback', 'banner'];
-
-    this.stylesFrom = null;
-    this.contoboxFileTypes = null;
-    this.io = null;
-    this.themeName = null;
-    this.themeFolderName = null;
   }
 
   async init() {
@@ -55,7 +51,16 @@ class Program {
       await this.loadFromLocal();
     }
 
-    this.startWatchingFiles();
+    this.watchFiles();
+  }
+
+  private async reLoginIfNoActive() {
+    if (this.loginTimerId) clearTimeout(this.loginTimerId);
+
+    this.loginTimerId = setTimeout(() => {
+      this.authService.logIn(true);
+      this.reLoginIfNoActive();
+    }, RELOGIN_TIMEOUT);
   }
 
   private async start() {
@@ -166,12 +171,14 @@ class Program {
     this.contoboxFilesService.createFiles(pulledFilesData);
   }
 
-  private startWatchingFiles() {
+  private watchFiles() {
     if (!this.contoboxFilesService) throw new Error('ContoboxFilesService not found');
     if (!this.themeService) throw new Error('ThemeService not found');
 
     const workDir = this.contoboxFilesService.cssWorkingDir;
     const workDirFileNames = FileService.readDir(workDir);
+
+    this.reLoginIfNoActive();
 
     workDirFileNames.forEach(fileName => {
       const file = this.contoboxFilesService!.getFileData(fileName);
@@ -179,7 +186,10 @@ class Program {
       if (file) {
         watch(resolve(workDir, file.localFileName), () => {
           const newFileData = this.contoboxFilesService!.getFileDataWithStyles(file.localFileName);
-          if (newFileData) this.themeService!.push(newFileData);
+          if (newFileData) {
+            this.themeService!.push(newFileData);
+            this.reLoginIfNoActive();
+          }
         });
       }
     });

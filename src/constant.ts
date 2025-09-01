@@ -1,5 +1,7 @@
 import { resolve } from 'path';
 
+export const RELOGIN_TIMEOUT = parseInt(Bun.env.RELOGIN_TIMEOUT!);
+
 export const USERNAME = Bun.env.USER_NAME!;
 export const PASSWORD = Bun.env.PASSWORD!;
 

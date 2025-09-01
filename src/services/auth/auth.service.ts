@@ -8,7 +8,7 @@ import { Logger } from '../../logger/logger';
 import { USERNAME, PASSWORD, LOGIN_ENDPOINT, SID_DIR } from '../../constant';
 
 export class AuthService {
-  async logIn() {
+  async logIn(disableClearConsole: boolean = false) {
     try {
       Logger.log('Logging in ...');
 
@@ -38,11 +38,13 @@ export class AuthService {
         Logger.error('Error', 'Wrong username or password');
         process.exit();
       } else {
-        Logger.clear();
+        if (!disableClearConsole) Logger.clear();
         Logger.success('Success', 'Logged in successfully!\n');
 
-        await timers.setTimeout(1000);
-        Logger.clear();
+        if (!disableClearConsole) {
+          await timers.setTimeout(1000);
+          Logger.clear();
+        };
       }
     } catch (err) {
       console.log(err);
