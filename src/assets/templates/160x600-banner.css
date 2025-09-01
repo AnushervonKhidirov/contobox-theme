@@ -2,58 +2,58 @@
 	general
    ================ */
 #panel {
-  --cbl-background: url(images/160x600_ib_bg.jpg) 0 0 no-repeat;
-  --cbl-menu-background: url(images/160x600_ib_menu_bg.jpg) 0 0 no-repeat;
+	--cbl-background: url(images/160x600_ib_bg.jpg) 0 0 no-repeat;
+	--cbl-menu-background: url(images/160x600_ib_menu_bg.jpg) 0 0 no-repeat;
 }
 
 /*
 	links
    ================ */
 .custom-links a.custom-link.main-cta {
-  top: 10px;
-  left: 10px;
-  width: 100px;
-  height: 56px;
+	top: 10px;
+	left: 10px;
+	width: 100px;
+	height: 56px;
 }
 
 a.custom-link.sec-cta {
-  bottom: 8px;
-  width: 147px;
-  height: 37px;
-  font-size: 15px;
+	bottom: 8px;
+	width: 147px;
+	height: 37px;
+	font-size: 15px;
 }
 
 /* ================	
 	controls
    ================ */
 [data-rd='lr'] div#nav_bar {
-  bottom: 67px;
+	bottom: 67px;
 }
 
 div#tab_names {
-  top: 60px;
-  height: 25px;
-  font-size: 13px;
+	top: 60px;
+	height: 25px;
+	font-size: 13px;
 }
 
 div#menu_icon {
-  top: 5px;
-  right: 5px;
+	top: 5px;
+	right: 5px;
 }
 
 ul.layout-tab-holder {
-  padding: 0 8px;
+	padding: 0 8px;
 }
 
 .tab-button-content {
-  font-size: 16px;
+	font-size: 16px;
 }
 
 /* ================
 	content
    ================ */
 .card_sliding[data-rd='lr'] div.cbl_card {
-  inset: 87px 3px 92px 3px;
+	inset: 87px 3px 92px 3px;
 }
 
 /*
@@ -61,95 +61,95 @@ ul.layout-tab-holder {
    ================= */
 div.video-js,
 .cbox-muter-parent {
-  font-size: 8px;
+	font-size: 8px;
 }
 
 /*
 	Locator tab (slider)
    ================= */
 .cbl .locator {
-  grid-template-rows: 210px 1fr;
+	grid-template-rows: 210px 1fr;
 }
 
 .locator_slide_holder {
-  inset: 0 15px;
+	inset: 0 15px;
 }
 
 /* form */
 .cbl form.locator_form {
-  --search-button-width: 30px;
-  top: 10px;
-  width: 138px;
-  height: 26px;
+	--search-button-width: 30px;
+	top: 10px;
+	width: 138px;
+	height: 26px;
 }
 
 /* loc inner */
 .loc_inner {
-  gap: 8px;
-  padding: 0 5px;
+	gap: 8px;
+	padding: 0 5px;
 }
 
 .loc.loc_distance {
-  font-size: 20px;
+	font-size: 20px;
 }
 
 .loc.loc_name {
-  font-size: 17px;
+	font-size: 17px;
 }
 
 .loc.loc_address {
-  font-size: 16px;
+	font-size: 16px;
 }
 
 /* arrows */
 .locator_slide_prev,
 .locator_slide_next {
-  top: calc(50% - 30px / 2);
-  width: 15px;
-  height: 30px;
-  padding: 4px;
+	top: calc(50% - 30px / 2);
+	width: 15px;
+	height: 30px;
+	padding: 4px;
 }
 
 /*
 	Locator tab (more locations)
    ================= */
 .cbl .locator {
-  grid-template-areas: 'loc_map' 'loc_inner' 'more';
-  grid-template-rows: 200px 1fr max-content;
+	grid-template-areas: 'loc_map' 'loc_inner' 'more';
+	grid-template-rows: 200px 1fr max-content;
 }
 
 /* form */
 .cbl form.locator_form {
-  --search-button-width: 30px;
-  top: 10px;
-  width: 134px;
-  height: 30px;
-  border-radius: 10px;
+	--search-button-width: 30px;
+	top: 10px;
+	width: 134px;
+	height: 30px;
+	border-radius: 10px;
 }
 
 /* loc inner */
 .loc_inner {
-  align-content: center;
-  gap: 8px;
+	align-content: center;
+	gap: 8px;
 }
 
 .loc.loc_distance {
-  font-size: 18px;
+	font-size: 18px;
 }
 
 .loc.loc_name {
-  font-size: 11.5px;
+	font-size: 11.5px;
 }
 
 .loc.loc_address {
-  font-size: 10px;
+	font-size: 10px;
 }
 
 .loc_ml .more_locations {
-  justify-self: self-end;
-  font-size: 10px;
+	justify-self: self-end;
+	font-size: 10px;
 }
 
 .loc_ml .ml_back {
-  font-size: 10px;
+	font-size: 10px;
 }
