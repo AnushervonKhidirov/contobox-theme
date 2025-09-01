@@ -2,55 +2,55 @@
 	general
    ================ */
 #panel {
-	--cbl-background: url(images/300x250_ib_bg.jpg) 0 0 no-repeat;
-	--cbl-menu-background: url(images/300x250_ib_menu_bg.jpg) 0 0 no-repeat;
+    --cbl-background: url(images/300x250_ib_bg.jpg) 0 0 no-repeat;
+    --cbl-menu-background: url(images/300x250_ib_menu_bg.jpg) 0 0 no-repeat;
 }
 
 /*
 	links
    ================ */
 .custom-links a.custom-link.main-cta {
-	top: 5px;
-	left: 11px;
-	width: 81px;
-	height: 42px;
+    top: 5px;
+    left: 11px;
+    width: 81px;
+    height: 42px;
 }
 
 a.custom-link.sec-cta {
-	bottom: 10px;
-	right: 5px;
-	width: 166px;
-	height: 31px;
-	font-size: 12px;
+    bottom: 10px;
+    right: 5px;
+    width: 166px;
+    height: 31px;
+    font-size: 12px;
 }
 
 /* ================
 	controls
    ================ */
 [data-rd='lr'] div#nav_bar {
-	bottom: 25px;
-	left: 5px;
-	font-size: 1rem;
+    bottom: 25px;
+    left: 5px;
+    font-size: 1rem;
 }
 
 div#tab_names {
-	width: 90px;
-	font-size: 10px;
+    width: 90px;
+    font-size: 10px;
 }
 
 ul.layout-tab-holder {
-	padding: 3rem 6rem 0;
+    padding: 3rem 6rem 0;
 }
 
 .tab-button-content {
-	font-size: 12px;
+    font-size: 12px;
 }
 
 /* ================
 	content
    ================ */
 .card_sliding[data-rd='lr'] div.cbl_card {
-	inset: 50px 7px 58px 7px;
+    inset: 50px 7px 58px 7px;
 }
 
 /*
@@ -61,92 +61,92 @@ ul.layout-tab-holder {
 	Locator tab (slider)
    ================= */
 .cbl .locator {
-	grid-template-columns: 115px 1fr;
+    grid-template-columns: 115px 1fr;
 }
 
 .locator_slide_holder {
-	inset: 0 15px;
+    inset: 0 15px;
 }
 
 /* form */
 .cbl form.locator_form {
-	--search-button-width: 20px;
-	top: 10px;
-	left: 10px;
-	width: 95px;
-	height: 20px;
+    --search-button-width: 20px;
+    top: 10px;
+    left: 10px;
+    width: 95px;
+    height: 20px;
 }
 
 /* loc inner */
 .loc_inner {
-	gap: 5px;
-	padding: 0 5px;
+    gap: 5px;
+    padding: 0 5px;
 }
 
 .loc.loc_distance {
-	font-size: 20px;
+    font-size: 20px;
 }
 
 .loc.loc_name {
-	font-size: 17px;
+    font-size: 17px;
 }
 
 .loc.loc_address {
-	font-size: 17px;
+    font-size: 17px;
 }
 
 /* arrows */
 .locator_slide_prev,
 .locator_slide_next {
-	top: calc(50% - 30px / 2);
-	width: 15px;
-	height: 30px;
-	padding: 4px;
+    top: calc(50% - 30px / 2);
+    width: 15px;
+    height: 30px;
+    padding: 4px;
 }
 
 /*
 	Locator tab (more locations)
    ================= */
 .cbl .locator {
-	grid-template-areas: 'loc_map loc_inner' 'loc_map more';
-	grid-template-columns: 140px 1fr;
-	grid-template-rows: 1fr max-content;
+    grid-template-areas: 'loc_map loc_inner' 'loc_map more';
+    grid-template-columns: 140px 1fr;
+    grid-template-rows: 1fr max-content;
 }
 
 /* form */
 .cbl form.locator_form {
-	--search-button-width: 25px;
-	top: 6px;
-	left: 5px;
-	width: 130px;
-	height: 24px;
-	border-radius: 10px;
+    --search-button-width: 25px;
+    top: 6px;
+    left: 5px;
+    width: 130px;
+    height: 24px;
+    border-radius: 10px;
 }
 
 /* loc inner */
 .loc_inner {
-	align-content: start;
-	gap: 5px;
-	padding: 10px;
+    align-content: start;
+    gap: 5px;
+    padding: 10px;
 }
 
 .loc.loc_distance {
-	font-size: 13px;
+    font-size: 13px;
 }
 
 .loc.loc_name {
-	font-size: 11.5px;
+    font-size: 11.5px;
 }
 
 .loc.loc_address {
-	font-size: 8px;
+    font-size: 8px;
 }
 
 .loc_ml .more_locations {
-	justify-self: self-end;
-	font-size: 6px;
+    justify-self: self-end;
+    font-size: 6px;
 }
 
 .loc_ml .ml_back {
-	font-size: 8px;
+    font-size: 8px;
 }
