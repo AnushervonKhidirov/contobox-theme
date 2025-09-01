@@ -30,7 +30,7 @@ export class ContoboxFilesService {
 
       FileService.copy(templateFilePath, destFilePath);
 
-      if ('styles' in file) FileService.writeFile(destFilePath, file.localFileName);
+      if ('styles' in file) FileService.writeFile(destFilePath, file.styles);
     });
   }
 
