@@ -39,12 +39,12 @@ export class AuthService {
         process.exit();
       } else {
         if (!disableClearConsole) Logger.clear();
-        Logger.success('Success', 'Logged in successfully!\n');
+        Logger.success('Success', 'Logged in successfully!', true);
 
         if (!disableClearConsole) {
           await timers.setTimeout(1000);
           Logger.clear();
-        };
+        }
       }
     } catch (err) {
       console.log(err);
