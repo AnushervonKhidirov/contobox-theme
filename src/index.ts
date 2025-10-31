@@ -33,7 +33,7 @@ class Program {
     this.authService = new AuthService();
 
     this.stylesFromList = ['server', 'local'];
-    this.availableTypesList = ['desktop', 'mobile', 'fallback', 'banner'];
+    this.availableTypesList = ['desktop', 'mobile', 'fallback', 'banner', 'ironsource'];
   }
 
   async init() {

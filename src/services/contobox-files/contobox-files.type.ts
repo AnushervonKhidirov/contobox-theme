@@ -11,4 +11,4 @@ export type FileDataWithStyles = FileData & {
   styles: string;
 };
 
-export type FileType = 'desktop' | 'mobile' | 'fallback' | 'banner';
+export type FileType = 'desktop' | 'mobile' | 'fallback' | 'banner' | 'ironsource';

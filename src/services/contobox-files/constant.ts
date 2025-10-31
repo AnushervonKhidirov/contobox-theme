@@ -28,6 +28,13 @@ export const cssFiles: FileData[] = [
   },
 
   {
+    localFileName: 'ironsource.css',
+    serverFileName: 'styles.css',
+    type: 'ironsource',
+    themeType: 'expansion',
+  },
+
+  {
     localFileName: 'styles-fallback.css',
     serverFileName: 'styles-fallback.css',
     type: 'fallback',
