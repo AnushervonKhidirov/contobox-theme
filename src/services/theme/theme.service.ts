@@ -110,6 +110,6 @@ export class ThemeService {
 
   private getRequestBody({ themeType, serverFileName, styles }: RequestBodyData) {
     const body = `file=cbox_themes_v3/${this.themeName}/styles/${themeType}/${serverFileName}`;
-    return styles ? body + `&style=${encodeURIComponent(styles)}` : body;
+    return typeof styles === 'string' ? body + `&style=${encodeURIComponent(styles)}` : body;
   }
 }
