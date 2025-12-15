@@ -1,4 +1,11 @@
-import { existsSync, mkdirSync, copyFileSync, readFileSync, writeFileSync, readdirSync } from 'fs';
+import {
+  existsSync,
+  mkdirSync,
+  copyFileSync,
+  readFileSync,
+  writeFileSync,
+  readdirSync,
+} from 'node:fs';
 
 type CreateFileOptions = {
   showError: boolean;
@@ -33,7 +40,7 @@ export class FileService {
 
   static copy(pathFrom: string, pathTo: string) {
     if (!existsSync(pathFrom)) throw new Error(`Path not found: ${pathFrom}`);
-    if (!existsSync(pathTo)) this.createFolder(pathTo.replace(/[\w-]+\.[A-Za-z0-9]{2,5}/g, ''));
+    if (!existsSync(pathTo)) this.createFolder(pathTo.replaceAll(/[\w-]+\.[A-Za-z0-9]{2,5}/g, ''));
 
     copyFileSync(pathFrom, pathTo);
   }

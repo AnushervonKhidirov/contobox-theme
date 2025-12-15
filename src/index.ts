@@ -1,10 +1,10 @@
 import type { StylesFrom } from './type';
 import type { FileType } from './services/contobox-files/contobox-files.type';
 
-import { resolve } from 'path';
-import { exec } from 'child_process';
+import { resolve } from 'node:path';
+import { exec } from 'node:child_process';
 import { input, select, checkbox, confirm } from '@inquirer/prompts';
-import { existsSync, watch } from 'fs';
+import { existsSync, watch } from 'node:fs';
 
 import { FileService } from './services/files/files.service';
 import { AuthService } from './services/auth/auth.service';
@@ -52,6 +52,8 @@ class Program {
     }
 
     this.watchFiles();
+
+    // TODO: pull from server while press letter p
   }
 
   private async reLoginIfNoActive() {
@@ -84,7 +86,7 @@ class Program {
       required: true,
     });
 
-    this.io = parseInt(await input({ message: 'Contobox IO:', required: true }));
+    this.io = Number.parseInt(await input({ message: 'Contobox IO:', required: true }));
     this.themeName = (await input({ message: 'Theme name:', required: true })).trim();
 
     this.themeFolderName = `IO ${this.io} | ${this.themeName}`;
@@ -180,8 +182,8 @@ class Program {
 
     this.reLoginIfNoActive();
 
-    workDirFileNames.forEach(fileName => {
-      const file = this.contoboxFilesService!.getFileData(fileName);
+    for (const fileName of workDirFileNames) {
+      const file = this.contoboxFilesService.getFileData(fileName);
 
       if (file) {
         watch(resolve(workDir, file.localFileName), () => {
@@ -192,7 +194,7 @@ class Program {
           }
         });
       }
-    });
+    }
   }
 }
 

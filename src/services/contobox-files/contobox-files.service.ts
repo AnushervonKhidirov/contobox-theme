@@ -1,6 +1,6 @@
 import type { FileData, FileDataWithStyles, FileType } from './contobox-files.type';
 
-import { resolve } from 'path';
+import { resolve } from 'node:path';
 import { FileService } from '../files/files.service';
 
 import { WORKING_DIR, TEMPLATE_DIR } from '../../constant';
@@ -24,14 +24,14 @@ export class ContoboxFilesService {
   createFiles(filesDataWithStyles?: FileDataWithStyles[]) {
     const filesData: (FileDataWithStyles | FileData)[] = filesDataWithStyles || this.workingFiles;
 
-    filesData.forEach(file => {
+    for (const file of filesData) {
       const templateFilePath = resolve(TEMPLATE_DIR, file.localFileName);
       const destFilePath = resolve(this.cssWorkingDir, file.localFileName);
 
       FileService.copy(templateFilePath, destFilePath);
 
       if ('styles' in file) FileService.writeFile(destFilePath, file.styles);
-    });
+    }
   }
 
   getAllFilesData() {
@@ -39,10 +39,10 @@ export class ContoboxFilesService {
 
     const workDitFilesData: FileData[] = [];
 
-    fileNames.forEach(fileName => {
+    for (const fileName of fileNames) {
       const fileData = this.getFileData(fileName);
       if (fileData) workDitFilesData.push(fileData);
-    });
+    }
 
     return workDitFilesData;
   }
@@ -52,10 +52,10 @@ export class ContoboxFilesService {
 
     const workDitFilesData: FileDataWithStyles[] = [];
 
-    fileNames.forEach(fileName => {
+    for (const fileName of fileNames) {
       const fileData = this.getFileDataWithStyles(fileName);
       if (fileData) workDitFilesData.push(fileData);
-    });
+    }
 
     return workDitFilesData;
   }

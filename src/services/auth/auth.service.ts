@@ -1,6 +1,6 @@
 import { Cookie } from 'bun';
 
-import timers from 'timers/promises';
+import timers from 'node:timers/promises';
 
 import { FileService } from '../files/files.service';
 import { Logger } from '../../logger/logger';
