@@ -4,7 +4,7 @@ import type { FileType } from './services/contobox-files/contobox-files.type';
 import { resolve } from 'node:path';
 import { exec } from 'node:child_process';
 import { input, select, checkbox, confirm } from '@inquirer/prompts';
-import { existsSync, watch } from 'node:fs';
+import { existsSync, watch, type FSWatcher } from 'node:fs';
 
 import { FileService } from './services/files/files.service';
 import { AuthService } from './services/auth/auth.service';
@@ -12,6 +12,7 @@ import { ContoboxFilesService } from './services/contobox-files/contobox-files.s
 import { ThemeService } from './services/theme/theme.service';
 
 import { RELOGIN_TIMEOUT, WORKING_DIR, ASSETS_DIR, SID_DIR } from './constant';
+import { createInterface } from 'node:readline';
 
 class Program {
   private readonly authService: AuthService;
@@ -28,6 +29,7 @@ class Program {
   private themeFolderName: string | null = null;
 
   private loginTimerId: NodeJS.Timeout | null = null;
+  private fileWatchers: FSWatcher[] = [];
 
   constructor() {
     this.authService = new AuthService();
@@ -52,8 +54,7 @@ class Program {
     }
 
     this.watchFiles();
-
-    // TODO: pull from server while press letter p
+    this.setTerminalCommandsListener();
   }
 
   private async reLoginIfNoActive() {
@@ -186,15 +187,48 @@ class Program {
       const file = this.contoboxFilesService.getFileData(fileName);
 
       if (file) {
-        watch(resolve(workDir, file.localFileName), () => {
+        const fileWatcher = watch(resolve(workDir, file.localFileName), () => {
           const newFileData = this.contoboxFilesService!.getFileDataWithStyles(file.localFileName);
           if (newFileData) {
             this.themeService!.push(newFileData);
             this.reLoginIfNoActive();
           }
         });
+
+        this.fileWatchers.push(fileWatcher);
       }
     }
+  }
+
+  private async setTerminalCommandsListener() {
+    const rl = createInterface({
+      input: process.stdin,
+      output: process.stdout,
+      terminal: true,
+    });
+
+    process.stdin.setRawMode(true);
+
+    process.stdin.on('data', async key => {
+      const exitBuffer = Buffer.from('\u0003');
+      const pullThemeBuffer = Buffer.from('\u0050');
+
+      if (key.equals(exitBuffer)) {
+        rl.close();
+        process.exit(0);
+      }
+
+      if (key.equals(pullThemeBuffer)) {
+        for (const fileWatcher of this.fileWatchers) {
+          fileWatcher.close();
+        }
+
+        this.fileWatchers = [];
+
+        await this.loadFromServer();
+        this.watchFiles();
+      }
+    });
   }
 }
 

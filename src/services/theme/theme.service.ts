@@ -75,30 +75,17 @@ export class ThemeService {
   }
 
   async pushMany(files: FileDataWithStyles[]) {
-    await nextFile.call(this);
-
-    async function nextFile(this: ThemeService, curr = files.length - 1) {
-      if (curr !== 0) await nextFile.call(this, curr - 1);
-
-      const fileData = files[curr];
-      if (fileData) await this.push(fileData);
+    for (const fileData of files) {
+      await this.push(fileData);
     }
   }
 
   async pullMany(files: FileData[]) {
     const pulledFilesData: FileDataWithStyles[] = [];
 
-    await nextFile.call(this);
-
-    async function nextFile(this: ThemeService, curr = files.length - 1) {
-      if (curr !== 0) await nextFile.call(this, curr - 1);
-
-      const fileData = files[curr];
-
-      if (fileData) {
-        const styles = (await this.pull(fileData)) ?? '';
-        pulledFilesData.push({ ...fileData, styles });
-      }
+    for (const fileData of files) {
+      const styles = (await this.pull(fileData)) ?? '';
+      pulledFilesData.push({ ...fileData, styles });
     }
 
     return pulledFilesData;
