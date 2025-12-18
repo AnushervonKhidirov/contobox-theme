@@ -53,6 +53,10 @@ class Program {
       await this.loadFromLocal();
     }
 
+    if (this.contoboxFilesService && this.themeFolderName) {
+      FileService.createFolder(resolve(WORKING_DIR, this.themeFolderName, 'images'));
+    }
+
     this.watchFiles();
     this.setTerminalCommandsListener();
   }
