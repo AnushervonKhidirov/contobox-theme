@@ -24,6 +24,7 @@ class Program {
 
   private stylesFrom: StylesFrom | null = null;
   private contoboxFileTypes: FileType[] | null = null;
+  private nestedStyles: boolean = false;
   private io: number | null = null;
   private themeName: string | null = null;
   private themeFolderName: string | null = null;
@@ -91,6 +92,11 @@ class Program {
       required: true,
     });
 
+    this.nestedStyles = await confirm({
+      message: `Use nested styles?`,
+      default: false,
+    }); 
+
     this.io = Number.parseInt(await input({ message: 'Contobox IO:', required: true }));
     this.themeName = (await input({ message: 'Theme name:', required: true })).trim();
 
@@ -156,6 +162,7 @@ class Program {
     this.contoboxFilesService = new ContoboxFilesService(
       this.themeFolderName,
       this.contoboxFileTypes,
+      this.nestedStyles,
     );
   }
 

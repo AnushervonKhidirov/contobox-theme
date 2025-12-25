@@ -3,20 +3,22 @@ import type { FileData, FileDataWithStyles, FileType } from './contobox-files.ty
 import { resolve } from 'node:path';
 import { FileService } from '../files/files.service';
 
-import { WORKING_DIR, TEMPLATE_DIR } from '../../constant';
+import { WORKING_DIR, TEMPLATE_DIR, TEMPLATE_DIR_NESTING } from '../../constant';
 import { cssFiles } from './constant';
 
 export class ContoboxFilesService {
   private readonly themeName: string;
   private readonly fileTypes: FileType[];
 
+  readonly cssTemplateDir: string;
   readonly cssWorkingDir: string;
   readonly workingFiles: FileData[];
 
-  constructor(themeName: string, fileTypes: FileType[]) {
+  constructor(themeName: string, fileTypes: FileType[], withNesting: boolean = false) {
     this.themeName = themeName;
     this.fileTypes = fileTypes;
 
+    this.cssTemplateDir = withNesting ? TEMPLATE_DIR_NESTING : TEMPLATE_DIR;
     this.cssWorkingDir = resolve(WORKING_DIR, this.themeName);
     this.workingFiles = cssFiles.filter(file => this.fileTypes.includes(file.type));
   }
@@ -25,7 +27,7 @@ export class ContoboxFilesService {
     const filesData: (FileDataWithStyles | FileData)[] = filesDataWithStyles || this.workingFiles;
 
     for (const file of filesData) {
-      const templateFilePath = resolve(TEMPLATE_DIR, file.localFileName);
+      const templateFilePath = resolve(this.cssTemplateDir, file.localFileName);
       const destFilePath = resolve(this.cssWorkingDir, file.localFileName);
 
       FileService.copy(templateFilePath, destFilePath);

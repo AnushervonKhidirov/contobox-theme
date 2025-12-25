@@ -1,0 +1,263 @@
+/* =================
+	general
+   ================= */
+#panel {
+    --primary: #003768;
+
+    width: 1100px;
+    height: 770px;
+    background: url(images/desktop-bg.jpg) center no-repeat;
+    background-size: cover;
+    padding: 59px 28px 66px 43px;
+}
+
+/*
+	links
+   ================= */
+a.custom-link.main-cta {
+    background: url(images/logo.png) center no-repeat;
+    background-size: contain;
+}
+
+a.custom-link.sec-cta {
+    width: 195px;
+    height: 50px;
+    font-size: 18.5px;
+}
+
+/* =================
+	navigation bar
+   ================= */
+.layout-nav-bar {
+    height: 490px;
+    gap: 28px;
+    padding-top: 24px;
+
+    ul.layout-tab-holder {
+        gap: 8px;
+
+        li.tab-button {
+            height: 32px;
+            font-size: 15px;
+            font-family: 'Gotham', sans-serif;
+            text-align: center;
+        }
+    }
+}
+
+/* =================
+	side bar
+   ================= */
+#social-buttons {
+    margin: 15px 0;
+}
+
+.sl-buttons {
+    gap: 15px;
+}
+
+.social-button {
+    width: 15px;
+    height: 15px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    transition: opacity 0.2s;
+
+    &:hover {
+        opacity: 0.5;
+    }
+}
+
+/* social items */
+.facebook-social-icon {
+    background-image: url(images/facebook-icon.png);
+}
+
+.twitter-social-icon {
+    background-image: url(images/twitter-icon.png);
+}
+
+.instagram-social-icon {
+    background-image: url(images/instagram-icon.png);
+}
+
+.youtube-social-icon {
+    background-image: url(images/youtube-icon.png);
+}
+
+.linkedin-social-icon {
+    background-image: url(images/linkedin-icon.png);
+}
+
+/* =================
+	footer
+   ================= */
+.message-icon {
+    background: url(images/message-icon.png) center no-repeat;
+    background-size: contain;
+}
+
+/* =================
+	content
+   ================= */
+
+/*
+	Store Locator tab
+   ================= */
+.locator_map {
+    left: 0;
+    width: 360px;
+}
+
+/* form */
+.locator_form {
+    top: 17px;
+    left: 25px;
+    width: 310px;
+    height: 40px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 2px 3px 3px rgba(0, 0, 0, 0.2);
+}
+
+.loc_form_cell {
+    width: 100%;
+    height: 100%;
+}
+
+.loc_search_text {
+    width: 100%;
+    height: 100%;
+    border-width: 0;
+    border-radius: 0;
+    padding: 0 45px;
+    box-sizing: border-box;
+}
+
+.loc_search_button {
+    position: absolute;
+    top: 0;
+    width: 45px;
+    height: 100%;
+    background: url(images/search-icon.png) center no-repeat transparent;
+    background-size: contain;
+    background-origin: content-box;
+    font-size: 0;
+    border: none;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.loc_inner {
+    color: var(--primary);
+    padding: 10px 20px;
+}
+
+.loc.loc_name {
+    font-family: 'LandRoverWeb', sans-serif;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* slider */
+.locator_slider {
+    top: 0;
+    left: 360px;
+    right: 0;
+    display: block;
+    width: auto;
+    height: 180px;
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+
+    .loc_inner {
+        display: grid;
+        grid-template-areas: 'distance' 'name' 'address';
+        gap: 5px;
+        padding: 25px;
+    }
+
+    .loc.loc_name {
+        grid-area: name;
+        font-size: 20px;
+    }
+
+    .loc.loc_address {
+        grid-area: address;
+        font-size: 15px;
+    }
+
+    .loc_distance {
+        display: block;
+        grid-area: distance;
+        order: 1;
+        font-size: 24px;
+        line-height: 1;
+
+        &::after {
+            content: ' km';
+            font-size: 0.5em;
+        }
+    }
+}
+
+.locator_slide_holder {
+    inset: 0;
+}
+
+/* list */
+.locator_list {
+    top: 180px;
+    left: 360px;
+    right: 0;
+    width: auto;
+    background: #fff;
+
+    .scroller-handler {
+        background: #d8d8d8;
+    }
+
+    .loc.loc_name {
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+}
+
+.loc_row {
+    border: none;
+}
+
+.loc.loc_address {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.gmnoprint.gm-style-mtc,
+.locator_slide_next,
+.locator_slide_prev,
+.loc_post_load .locator_form,
+.gm-control-active.gm-fullscreen-control,
+.gm-style-iw-a,
+.loc_search_label,
+.loc_radius_label,
+.loc_radius_select,
+.loc:not(.loc_distance, .loc_name, .loc_address) {
+    display: none;
+}
+
+/* =================
+	others
+   ================= */
+.tab-icon,
+.sl-header,
+.sl-footer,
+.social-button > *,
+.message-icon > *,
+.message-sep,
+.gl-thumbs,
+.gl-thumb-prev,
+.gl-thumb-next {
+    display: none !important;
+}

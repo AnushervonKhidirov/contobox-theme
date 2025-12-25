@@ -84,40 +84,39 @@ div#tab_names > div {
 /*
 	Locator tab (slider)
    ================= */
-.cbl .locator {
-    grid-template-rows: 198px 1fr;
-    gap: 0;
-}
+.cbl {
+    .locator {
+        grid-template-rows: 198px 1fr;
+        gap: 0;
+    }
 
-/* form */
-.cbl form.locator_form {
-    --search-button-width: 45px;
-    top: 10px;
-    width: 240px;
-    height: 33px;
-    background-color: #fff;
-    overflow: hidden;
-    margin: 0;
-    box-shadow: 0 0 1em rgba(0, 0, 0, 0.2);
-    z-index: 2;
-}
+    /* form */
+    form.locator_form {
+        --search-button-width: 45px;
+        top: 10px;
+        width: 240px;
+        height: 33px;
+        background-color: #fff;
+        overflow: hidden;
+        margin: 0;
+        box-shadow: 0 0 1em rgba(0, 0, 0, 0.2);
+        z-index: 2;
 
-.cbl input.loc_search_text,
-.cbl button.loc_search_button {
-    border: none;
-}
+        input.loc_search_text {
+            width: calc(100% - var(--search-button-width));
+            background-color: transparent;
+            border: none;
+            padding: 0 0.5em;
+            box-sizing: border-box;
+        }
 
-.cbl input.loc_search_text {
-    width: calc(100% - var(--search-button-width));
-    background-color: transparent;
-    padding: 0 0.5em;
-    box-sizing: border-box;
-}
-
-.cbl button.loc_search_button {
-    width: var(--search-button-width);
-    background: url(images/search-icon.png) center no-repeat;
-    background-size: 50%;
+        button.loc_search_button {
+            width: var(--search-button-width);
+            background: url(images/search-icon.png) center no-repeat;
+            background-size: 50%;
+            border: none;
+        }
+    }
 }
 
 /* loc inner */
@@ -136,11 +135,11 @@ div#tab_names > div {
     grid-area: distance;
     font-size: 28px;
     font-weight: 700;
-}
 
-.loc.loc_distance::after {
-    content: ' km';
-    font-size: 0.65em;
+    &::after {
+        content: ' km';
+        font-size: 0.65em;
+    }
 }
 
 .loc.loc_name {
@@ -185,52 +184,51 @@ button.gm-control-active.gm-fullscreen-control,
 /*
 	Locator tab (more locations)
    ================= */
-.cbl .locator {
-    grid-template-areas: 'loc_map' 'loc_inner' 'more';
-    grid-template-rows: 200px 1fr max-content;
-    gap: 0;
-}
+.cbl {
+    .locator {
+        grid-template-areas: 'loc_map' 'loc_inner' 'more';
+        grid-template-rows: 200px 1fr max-content;
+        gap: 0;
+    }
 
-.locator_map {
-    grid-area: loc_map;
-}
+    .locator_map {
+        grid-area: loc_map;
+    }
 
-.locator_slide_holder {
-    inset: 0 !important;
-}
+    .locator_slide_holder {
+        inset: 0 !important;
+    }
 
-/* form */
-.cbl form.locator_form {
-    --search-button-width: 30px;
-    top: 10px;
-    width: 228px;
-    height: 30px;
-    background-color: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    margin: 0;
-    box-shadow: 0 0.3em 0.5em rgba(0, 0, 0, 0.2);
-    z-index: 2;
-}
+    /* form */
+    form.locator_form {
+        --search-button-width: 30px;
+        top: 10px;
+        width: 228px;
+        height: 30px;
+        background-color: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 0;
+        box-shadow: 0 0.3em 0.5em rgba(0, 0, 0, 0.2);
+        z-index: 2;
 
-.cbl input.loc_search_text,
-.cbl button.loc_search_button {
-    border: none;
-}
+        input.loc_search_text {
+            width: calc(100% - var(--search-button-width));
+            justify-self: end;
+            background-color: transparent;
+            border: none;
+            padding: 0 0.5em;
+            box-sizing: border-box;
+        }
 
-.cbl input.loc_search_text {
-    width: calc(100% - var(--search-button-width));
-    justify-self: end;
-    background-color: transparent;
-    padding: 0 0.5em;
-    box-sizing: border-box;
-}
-
-.cbl button.loc_search_button {
-    width: var(--search-button-width);
-    justify-self: start;
-    background: url(images/search-icon.png) center no-repeat;
-    background-size: 50%;
+        button.loc_search_button {
+            width: var(--search-button-width);
+            justify-self: start;
+            background: url(images/search-icon.png) center no-repeat;
+            background-size: 50%;
+            border: none;
+        }
+    }
 }
 
 /* loc inner */
@@ -258,11 +256,11 @@ button.gm-control-active.gm-fullscreen-control,
     display: block;
     grid-area: distance;
     font-size: 18.5px;
-}
 
-.loc.loc_distance::after {
-    content: ' miles';
-    font-size: 0.55em;
+    &::after {
+        content: ' km';
+        font-size: 0.65em;
+    }
 }
 
 .loc.loc_name {
@@ -277,32 +275,34 @@ button.gm-control-active.gm-fullscreen-control,
     font-weight: 700;
 }
 
-.loc_ml .more_locations,
-.loc_ml .ml_back {
-    color: var(--tertiary);
-    font-weight: 600;
-}
+.loc_ml {
+    .more_locations,
+    .ml_back {
+        color: var(--tertiary);
+        font-weight: 600;
+    }
 
-.loc_ml .more_locations {
-    grid-area: more;
-    justify-self: self-end;
-    font-size: 8px;
-}
+    .more_locations {
+        grid-area: more;
+        justify-self: self-end;
+        font-size: 8px;
 
-.loc_ml .more_locations span {
-    display: none;
-}
+        span {
+            display: none;
+        }
 
-.loc_ml .more_locations::after {
-    content: 'VIEW MORE LOCATIONS >';
-}
+        &::after {
+            content: 'VIEW MORE LOCATIONS >';
+        }
+    }
 
-.loc_ml .ml_back {
-    font-size: 10px;
-}
+    .ml_back {
+        font-size: 10px;
 
-.loc_ml .ml_back:before {
-    content: '< BACK';
+        &:before {
+            content: '< BACK';
+        }
+    }
 }
 
 /* disabled */

@@ -96,24 +96,6 @@ div#tab_names > div {
 /* ================
 	content
    ================ */
-div.cbl_card[data-card-pos] {
-    z-index: 9 !important;
-}
-
-/*
-	Video tab
-   ================= */
-.video_tab-component .cbl_card_content {
-    --cbl-card-content-bg: #000;
-}
-
-/*
-	Gallery tab
-   ================= */
-.gl-slide-image {
-    background-size: cover !important;
-    background-position: center !important;
-}
 
 /*
 	Locator tab (slider)
@@ -277,8 +259,8 @@ button.gm-control-active.gm-fullscreen-control,
 }
 
 .loc.loc_distance::after {
-    content: ' miles';
-    font-size: 0.55em;
+    content: ' km';
+    font-size: 0.65em;
 }
 
 .loc.loc_name {

@@ -1,7 +1,10 @@
 {
-    "prettier.printWidth": 130,
+    "prettier.printWidth": 150,
     "prettier.tabWidth": 4,
     "editor.tabSize": 4,
+    "files.associations": {
+        "*.css": "scss"
+    },
     "postcssSorting.config": {
         "order": ["custom-properties", "dollar-variables", "declarations", "at-rules", "rules"],
         "properties-order": [

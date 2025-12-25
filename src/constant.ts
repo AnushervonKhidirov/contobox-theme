@@ -12,5 +12,6 @@ export const PUSH_THEME_ENDPOINT = Bun.env.PUSH_THEME_ENDPOINT!;
 export const WORKING_DIR = Bun.env.WORKING_DIR!;
 export const ASSETS_DIR = resolve(process.cwd(), 'src', 'assets');
 export const TEMPLATE_DIR = resolve(ASSETS_DIR, 'templates');
+export const TEMPLATE_DIR_NESTING = resolve(ASSETS_DIR, 'templates_nesting');
 
 export const SID_DIR = resolve(process.cwd(), '.sid');

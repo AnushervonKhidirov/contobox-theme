@@ -59,10 +59,10 @@
     background: url(images/logo.png) center no-repeat;
     background-size: contain;
     transition: all 0.2s;
-}
 
-.custom-links a.custom-link.main-cta:hover {
-    transform: scale(1.03);
+    &:hover {
+        transform: scale(1.03);
+    }
 }
 
 a.custom-link.sec-cta {
@@ -74,11 +74,11 @@ a.custom-link.sec-cta {
     box-sizing: border-box;
     transition: all 0.2s;
     z-index: 9;
-}
 
-a.custom-link.sec-cta:hover {
-    background-color: var(--sec-cta-hover-bg);
-    color: var(--sec-cta-hover-color);
+    &:hover {
+        background-color: var(--sec-cta-hover-bg);
+        color: var(--sec-cta-hover-color);
+    }
 }
 
 /* ==================
@@ -100,40 +100,39 @@ div#tab_names > div {
 /*
 	Locator tab (slider)
    ================= */
-.cbl .locator {
-    gap: 0;
-}
+.cbl {
+    .locator {
+        gap: 0;
+    }
 
-.locator_slide_holder {
-    background-color: #fff;
-}
+    .locator_slide_holder {
+        background-color: #fff;
+    }
 
-/* form */
-.cbl form.locator_form {
-    --search-button-width: auto;
-    background-color: #fff;
-    overflow: hidden;
-    margin: 0;
-    box-shadow: 0 0 1em rgba(0, 0, 0, 0.2);
-    z-index: 2;
-}
+    /* form */
+    form.locator_form {
+        --search-button-width: auto;
+        background-color: #fff;
+        overflow: hidden;
+        margin: 0;
+        box-shadow: 0 0 1em rgba(0, 0, 0, 0.2);
+        z-index: 2;
 
-.cbl input.loc_search_text,
-.cbl button.loc_search_button {
-    border: none;
-}
+        input.loc_search_text {
+            width: calc(100% - var(--search-button-width));
+            background-color: transparent;
+            border: none;
+            padding: 0 0.5em;
+            box-sizing: border-box;
+        }
 
-.cbl input.loc_search_text {
-    width: calc(100% - var(--search-button-width));
-    background-color: transparent;
-    padding: 0 0.5em;
-    box-sizing: border-box;
-}
-
-.cbl button.loc_search_button {
-    width: var(--search-button-width);
-    background: url(images/search-icon.png) center no-repeat;
-    background-size: 50%;
+        button.loc_search_button {
+            width: var(--search-button-width);
+            background: url(images/search-icon.png) center no-repeat;
+            background-size: 50%;
+            border: none;
+        }
+    }
 }
 
 /* loc inner */
@@ -149,11 +148,11 @@ div#tab_names > div {
     display: block;
     grid-area: distance;
     font-weight: 700;
-}
 
-.loc.loc_distance::after {
-    content: ' km';
-    font-size: 0.65em;
+    &::after {
+        content: ' km';
+        font-size: 0.65em;
+    }
 }
 
 .loc.loc_name {
@@ -192,46 +191,45 @@ button.gm-control-active.gm-fullscreen-control,
 /*
 	Locator tab (more locations)
    ================= */
-.cbl .locator {
-    gap: 0;
-}
+.cbl {
+    .locator {
+        gap: 0;
+    }
 
-.locator_map {
-    grid-area: loc_map;
-}
+    .locator_map {
+        grid-area: loc_map;
+    }
 
-.locator_slide_holder {
-    inset: 0 !important;
-}
+    .locator_slide_holder {
+        inset: 0 !important;
+    }
 
-/* form */
-.cbl form.locator_form {
-    --search-button-width: auto;
-    background-color: #fff;
-    overflow: hidden;
-    margin: 0;
-    box-shadow: 0 0.3em 0.5em rgba(0, 0, 0, 0.2);
-    z-index: 2;
-}
+    /* form */
+    form.locator_form {
+        --search-button-width: auto;
+        background-color: #fff;
+        overflow: hidden;
+        margin: 0;
+        box-shadow: 0 0.3em 0.5em rgba(0, 0, 0, 0.2);
+        z-index: 2;
 
-.cbl input.loc_search_text,
-.cbl button.loc_search_button {
-    border: none;
-}
+        input.loc_search_text {
+            width: calc(100% - var(--search-button-width));
+            justify-self: end;
+            background-color: transparent;
+            border: none;
+            padding: 0 0.5em;
+            box-sizing: border-box;
+        }
 
-.cbl input.loc_search_text {
-    width: calc(100% - var(--search-button-width));
-    justify-self: end;
-    background-color: transparent;
-    padding: 0 0.5em;
-    box-sizing: border-box;
-}
-
-.cbl button.loc_search_button {
-    width: var(--search-button-width);
-    justify-self: start;
-    background: url(images/search-icon.png) center no-repeat;
-    background-size: 50%;
+        button.loc_search_button {
+            width: var(--search-button-width);
+            justify-self: start;
+            background: url(images/search-icon.png) center no-repeat;
+            background-size: 50%;
+            border: none;
+        }
+    }
 }
 
 /* loc inner */
@@ -256,11 +254,11 @@ button.gm-control-active.gm-fullscreen-control,
 .locator_slider .loc.loc_distance {
     display: block;
     grid-area: distance;
-}
 
-.loc.loc_distance::after {
-    content: ' km';
-    font-size: 0.65em;
+    &::after {
+        content: ' km';
+        font-size: 0.65em;
+    }
 }
 
 .loc.loc_name {
@@ -273,26 +271,28 @@ button.gm-control-active.gm-fullscreen-control,
     font-weight: 700;
 }
 
-.loc_ml .more_locations,
-.loc_ml .ml_back {
-    color: var(--tertiary);
-    font-weight: 600;
-}
+.loc_ml {
+    .more_locations,
+    .ml_back {
+        color: var(--tertiary);
+        font-weight: 600;
+    }
 
-.loc_ml .more_locations {
-    grid-area: more;
-}
+    .more_locations {
+        grid-area: more;
 
-.loc_ml .more_locations span {
-    display: none;
-}
+        span {
+            display: none;
+        }
 
-.loc_ml .more_locations::after {
-    content: 'VIEW MORE LOCATIONS >';
-}
+        &::after {
+            content: 'VIEW MORE LOCATIONS >';
+        }
+    }
 
-.loc_ml .ml_back:before {
-    content: '< BACK';
+    .ml_back:before {
+        content: '< BACK';
+    }
 }
 
 /* disabled */

@@ -1,0 +1,90 @@
+/* ================
+	Fonts
+   ================ */
+@font-face {
+    font-family: 'Gilam';
+    src: url('https://am.contobox.com/cbdata/fonts/Gilam/Gilam-Black.woff') format('woff'),
+        url('https://am.contobox.com/cbdata/fonts/Gilam/Gilam-Black.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* =================
+    Common
+   ================= */
+#root {
+    font-family: 'Gilam', sans-serif;
+}
+
+/*
+    Video frame
+   ================= */
+#video-frame {
+    background: #000;
+}
+
+.video_container,
+#video_tag {
+    position: absolute;
+    inset: 0;
+}
+
+.cbox-muter {
+    width: 50px;
+    height: 50px;
+}
+
+/*
+    Intro frame
+   ================= */
+
+/*
+    Game frame
+   ================= */
+
+/*
+    End frame
+   ================= */
+
+@media (orientation: portrait) {
+    /* =================
+        Common
+       ================= */
+    #root {
+        font-size: min(1vw, 0.45vh);
+    }
+
+    /*
+        Intro frame
+       ================= */
+
+    /*
+        Game frame
+       ================= */
+
+    /*
+        End frame
+       ================= */
+}
+
+@media (orientation: landscape) {
+    /* =================
+        Common
+       ================= */
+    #root {
+        font-size: min(1vh, 0.4vw);
+    }
+
+    /*
+        Intro frame
+       ================= */
+
+    /*
+        Game frame
+       ================= */
+
+    /*
+        End frame
+       ================= */
+}
