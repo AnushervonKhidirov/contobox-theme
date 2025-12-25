@@ -34,7 +34,7 @@ class Program {
   constructor() {
     this.authService = new AuthService();
 
-    this.stylesFromList = ['server', 'local'];
+    this.stylesFromList = ['from theme', 'from templates'];
     this.availableTypesList = ['desktop', 'mobile', 'fallback', 'banner', 'ironsource'];
   }
 
@@ -47,7 +47,7 @@ class Program {
     this.initThemeService();
     this.initContoboxFilesService();
 
-    if (this.stylesFrom === 'server') {
+    if (this.stylesFrom === 'from theme') {
       await this.loadFromServer();
     } else {
       await this.loadFromLocal();

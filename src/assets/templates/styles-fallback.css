@@ -2,21 +2,27 @@
 	fonts
    ================= */
 @font-face {
-    font-family: 'Montserrat';
-    src: url('https://am.contobox.com/cbdata/fonts/Montserrat/Montserrat-Medium.woff') format('woff'),
-        url('https://am.contobox.com/cbdata/fonts/Montserrat/Montserrat-Medium.woff2') format('woff2');
+    font-family: 'Gotham';
+    src: url('https://am.contobox.com/cbdata/fonts/Gotham/Gotham-Book.woff') format('woff'),
+        url('https://am.contobox.com/cbdata/fonts/Gotham/Gotham-Book.woff2') format('woff2');
     font-weight: 400;
     font-style: normal;
-    font-display: swap;
 }
 
 @font-face {
-    font-family: 'Montserrat';
-    src: url('https://am.contobox.com/cbdata/fonts/Montserrat/Montserrat-SemiBold.woff') format('woff'),
-        url('https://am.contobox.com/cbdata/fonts/Montserrat/Montserrat-SemiBold.woff2') format('woff2');
+    font-family: 'Gotham';
+    src: url('https://am.contobox.com/cbdata/fonts/Gotham/Gotham-Medium.woff') format('woff'),
+        url('https://am.contobox.com/cbdata/fonts/Gotham/Gotham-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Gotham';
+    src: url('https://am.contobox.com/cbdata/fonts/Gotham/Gotham-Bold.woff') format('woff'),
+        url('https://am.contobox.com/cbdata/fonts/Gotham/Gotham-Bold.woff2') format('woff2');
     font-weight: 700;
     font-style: normal;
-    font-display: swap;
 }
 
 /* ================
@@ -41,9 +47,7 @@
     --tab-button-current-color: #fff;
     --tab-button-hover-bg: var(--primary);
     --tab-button-hover-color: #fff;
-}
 
-#panel {
     font-family: 'Montserrat', sans-serif;
     user-select: none;
 }

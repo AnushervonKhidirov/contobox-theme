@@ -19,6 +19,19 @@
     "[json]": {
         "editor.defaultFormatter": "vscode.json-language-features"
     },
+    "files.associations": {
+        "*.css": "scss"
+    },
+    "[css]": {
+        "prettier.tabWidth": 4,
+        "editor.tabSize": 4,
+        "prettier.printWidth": 150,
+    },
+    "[scss]": {
+        "prettier.tabWidth": 4,
+        "editor.tabSize": 4,
+        "prettier.printWidth": 150,
+    },
     "todohighlight.keywords": [
         {
             "text": "NOTE:",

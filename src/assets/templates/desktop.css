@@ -157,6 +157,7 @@ li.tab-button {
 
 .loc.loc_name {
     font-family: 'LandRoverWeb', sans-serif;
+    font-weight: 700;
     line-height: 1;
 }
 
@@ -226,10 +227,6 @@ li.tab-button {
 .locator_list .loc.loc_name {
     font-size: 13px;
     margin-bottom: 5px;
-}
-
-.loc.loc_name {
-    font-weight: 700;
 }
 
 .loc.loc_address {

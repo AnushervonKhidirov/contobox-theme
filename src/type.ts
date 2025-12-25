@@ -1,4 +1,4 @@
-export type StylesFrom = 'server' | 'local';
+export type StylesFrom = 'from theme' | 'from templates';
 
 export type ContoboxData = {
   io: number;
