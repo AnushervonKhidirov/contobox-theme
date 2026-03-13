@@ -3,7 +3,8 @@
    ================= */
 @font-face {
     font-family: 'Gotham';
-    src: url('https://am.contobox.com/cbdata/fonts/Gotham/Gotham-Book.woff') format('woff'),
+    src:
+        url('https://am.contobox.com/cbdata/fonts/Gotham/Gotham-Book.woff') format('woff'),
         url('https://am.contobox.com/cbdata/fonts/Gotham/Gotham-Book.woff2') format('woff2');
     font-weight: 400;
     font-style: normal;
@@ -11,7 +12,8 @@
 
 @font-face {
     font-family: 'Gotham';
-    src: url('https://am.contobox.com/cbdata/fonts/Gotham/Gotham-Medium.woff') format('woff'),
+    src:
+        url('https://am.contobox.com/cbdata/fonts/Gotham/Gotham-Medium.woff') format('woff'),
         url('https://am.contobox.com/cbdata/fonts/Gotham/Gotham-Medium.woff2') format('woff2');
     font-weight: 500;
     font-style: normal;
@@ -19,7 +21,8 @@
 
 @font-face {
     font-family: 'Gotham';
-    src: url('https://am.contobox.com/cbdata/fonts/Gotham/Gotham-Bold.woff') format('woff'),
+    src:
+        url('https://am.contobox.com/cbdata/fonts/Gotham/Gotham-Bold.woff') format('woff'),
         url('https://am.contobox.com/cbdata/fonts/Gotham/Gotham-Bold.woff2') format('woff2');
     font-weight: 700;
     font-style: normal;
@@ -58,7 +61,7 @@
 .custom-links a.custom-link.main-cta {
     background: url(images/logo.png) center no-repeat;
     background-size: contain;
-    transition: all 0.2s;
+    transition: transform 0.2s;
 
     &:hover {
         transform: scale(1.03);
@@ -72,7 +75,9 @@ a.custom-link.sec-cta {
     border-radius: 7px;
     padding: 0;
     box-sizing: border-box;
-    transition: all 0.2s;
+    transition:
+        background-color 0.2s,
+        color 0.2s;
     z-index: 9;
 
     &:hover {
